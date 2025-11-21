@@ -336,22 +336,25 @@
                                 continue;
                             } else if (comment.startsWith("@param")) {
                                 if (currentFunc) {
-                                    const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)?/);
+                                    // Updated regex to capture everything after type as description
+                                    const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
                                     if (paramMatch) {
                                         const [, name, type, modifier, desc] = paramMatch;
                                         currentFunc.parameters.push({
                                             name,
                                             type,
                                             modifier: modifier || null,
-                                            description: desc || "",
+                                            description: desc.trim() || "",
                                         });
                                     }
                                 }
                             } else if (comment.startsWith("@return")) {
                                 if (currentFunc) {
-                                    const returnMatch = comment.match(/@return\s+(\S+)/);
+                                    // Capture return type and description
+                                    const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
                                     if (returnMatch) {
                                         currentFunc.returns.type = returnMatch[1];
+                                        currentFunc.returns.description = returnMatch[2] ? returnMatch[2].trim() : "";
                                     }
                                 }
                             } else if (!comment.startsWith("@")) {
@@ -359,8 +362,8 @@
                                 description += (description ? " " : "") + comment;
                             }
                         } else if (line.startsWith("function")) {
-                            // Function declaration
-                            const funcMatch = line.match(/function\s+(\w+\.)?(\w+)\s*\((.*?)\)/);
+                            // Function declaration - handle both Class.method and standalone function
+                            const funcMatch = line.match(/function\s+(?:(\w+)\.)?(\w+)\s*\((.*?)\)/);
                             if (funcMatch) {
                                 const [, className, funcName, params] = funcMatch;
 
@@ -374,7 +377,7 @@
                                     apiSet: apiSet,
                                     type: type,
                                     description: description,
-                                    className: className ? className.slice(0, -1) : null,
+                                    className: className || null,
                                     parameters: [],
                                     returns: { type: "void", description: "" },
                                     rawParams: params,
@@ -408,6 +411,7 @@
                         })
                         .join(", ");
 
+                    // Handle both standalone functions and class methods
                     const fullName = func.className ? `${func.className}.${func.name}` : func.name;
                     return `${func.returns.type} ${fullName}(${params})`;
                 }
