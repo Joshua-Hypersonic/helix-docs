@@ -1,4 +1,5 @@
 ---@class Billboard
+local Billboard = {}
 
 ---Creates a new Billboard actor with a sprite component in 3D space.
 ---A Billboard is a 2D sprite that always faces the camera, useful for icons, markers, and UI elements in the game world.

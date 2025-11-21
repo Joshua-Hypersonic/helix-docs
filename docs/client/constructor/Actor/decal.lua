@@ -1,4 +1,5 @@
 ---@class Decal
+local Decal = {}
 
 ---Creates a new Decal actor in the world
 ---@param Location FVector World position
