@@ -312,90 +312,77 @@
                 parseLuaFile(content, filePath) {
                     const lines = content.split("\n");
                     const functions = [];
-                    let currentFunc = null;
                     let description = "";
-                    let inDocBlock = false;
+                    let pendingParams = [];
+                    let pendingReturn = { type: "void", description: "" };
 
                     // Extract metadata from file path
-                    // Expected: client/native/Player/GetPlayerPed.lua or server/engine/Math/MathFunction.lua
                     const pathParts = filePath.split("/");
-                    const apiSet = pathParts[0]; // client or server
-                    const type = pathParts[1]; // native, constructor, engine
-                    const category = pathParts[2]; // Player, Entity, Math, etc.
+                    const apiSet = pathParts[0];
+                    const type = pathParts[1];
+                    const category = pathParts[2];
 
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
 
                         // Start of doc comment
                         if (line.startsWith("---")) {
-                            inDocBlock = true;
                             const comment = line.substring(3).trim();
 
                             if (comment.startsWith("@class")) {
                                 // Skip class declarations
                                 continue;
                             } else if (comment.startsWith("@param")) {
-                                if (currentFunc) {
-                                    // Updated regex to capture everything after type as description
-                                    const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
-                                    if (paramMatch) {
-                                        const [, name, type, modifier, desc] = paramMatch;
-                                        currentFunc.parameters.push({
-                                            name,
-                                            type,
-                                            modifier: modifier || null,
-                                            description: desc.trim() || "",
-                                        });
-                                    }
+                                // Collect parameter info
+                                const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
+                                if (paramMatch) {
+                                    const [, name, type, modifier, desc] = paramMatch;
+                                    pendingParams.push({
+                                        name,
+                                        type,
+                                        modifier: modifier || null,
+                                        description: desc.trim() || "",
+                                    });
                                 }
                             } else if (comment.startsWith("@return")) {
-                                if (currentFunc) {
-                                    // Capture return type and description
-                                    const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
-                                    if (returnMatch) {
-                                        currentFunc.returns.type = returnMatch[1];
-                                        currentFunc.returns.description = returnMatch[2] ? returnMatch[2].trim() : "";
-                                    }
+                                // Collect return info
+                                const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
+                                if (returnMatch) {
+                                    pendingReturn = {
+                                        type: returnMatch[1],
+                                        description: returnMatch[2] ? returnMatch[2].trim() : "",
+                                    };
                                 }
                             } else if (!comment.startsWith("@")) {
                                 // Regular description line
                                 description += (description ? " " : "") + comment;
                             }
                         } else if (line.startsWith("function")) {
-                            // Function declaration - handle both Class.method and standalone function
+                            // Function declaration
                             const funcMatch = line.match(/function\s+(?:(\w+)\.)?(\w+)\s*\((.*?)\)/);
                             if (funcMatch) {
                                 const [, className, funcName, params] = funcMatch;
 
-                                if (currentFunc) {
-                                    functions.push(currentFunc);
-                                }
-
-                                currentFunc = {
+                                const func = {
                                     name: funcName,
                                     category: category,
                                     apiSet: apiSet,
                                     type: type,
                                     description: description,
                                     className: className || null,
-                                    parameters: [],
-                                    returns: { type: "void", description: "" },
+                                    parameters: pendingParams,
+                                    returns: pendingReturn,
                                     rawParams: params,
                                 };
 
-                                description = "";
-                                inDocBlock = false;
-                            }
-                        } else if (line.startsWith("end") && currentFunc) {
-                            // End of function
-                            functions.push(currentFunc);
-                            currentFunc = null;
-                        }
-                    }
+                                functions.push(func);
 
-                    // Catch any remaining function
-                    if (currentFunc) {
-                        functions.push(currentFunc);
+                                // Reset for next function
+                                description = "";
+                                pendingParams = [];
+                                pendingReturn = { type: "void", description: "" };
+                            }
+                        }
                     }
 
                     return functions;
