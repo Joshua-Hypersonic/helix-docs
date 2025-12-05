@@ -310,27 +310,45 @@
             // LuaDoc Parser
             class LuaDocParser {
                 parseLuaFile(content, filePath) {
-                    const lines = content.split("\n");
+                    const lines = content.split(/\r?\n/);
                     const functions = [];
+
                     let description = "";
                     let pendingParams = [];
                     let pendingReturn = { type: "void", description: "" };
 
+                    // filePath is the relative path, e.g. "client/native/Foo.lua" or
+                    // "client/native/Character/Movement.lua"
                     const pathParts = filePath.split("/");
 
+                    // apiSet: client / server / unknown
                     let apiSet = "unknown";
                     if (pathParts[0] === "client" || pathParts[0] === "server") {
                         apiSet = pathParts[0];
                     }
 
-                    // Prevent shift errors if missing folders
-                    const type = pathParts.length > 1 ? pathParts[1] : "general";
-                    const category = pathParts.length > 2 ? pathParts[2] : "misc";
+                    // type: native / engine / constructor / general
+                    const type = pathParts[1] || "general";
+
+                    // category: folder under type if present, else file base name
+                    const fileName = pathParts[pathParts.length - 1] || "";
+                    const fileBase = fileName.replace(/\.lua$/i, "");
+
+                    let category = "misc";
+                    if (pathParts.length > 3) {
+                        // e.g. client/native/Character/Movement.lua → "Character"
+                        category = pathParts[pathParts.length - 2];
+                    } else if (pathParts.length > 2) {
+                        // e.g. client/native/Foo.lua → "Foo"
+                        category = fileBase || "misc";
+                    } else {
+                        category = fileBase || "misc";
+                    }
 
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
 
-                        // Start of doc comment
+                        // Doc comments
                         if (line.startsWith("---")) {
                             const comment = line.substring(3).trim();
 
@@ -338,19 +356,19 @@
                                 // Skip class declarations
                                 continue;
                             } else if (comment.startsWith("@param")) {
-                                // Collect parameter info
+                                // @param name type @[out|opt] description...
                                 const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
                                 if (paramMatch) {
-                                    const [, name, type, modifier, desc] = paramMatch;
+                                    const [, name, typeName, modifier, desc] = paramMatch;
                                     pendingParams.push({
                                         name,
-                                        type,
+                                        type: typeName,
                                         modifier: modifier || null,
-                                        description: desc.trim() || "",
+                                        description: (desc || "").trim(),
                                     });
                                 }
                             } else if (comment.startsWith("@return")) {
-                                // Collect return info
+                                // @return type description...
                                 const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
                                 if (returnMatch) {
                                     pendingReturn = {
@@ -359,12 +377,13 @@
                                     };
                                 }
                             } else if (!comment.startsWith("@")) {
-                                // Regular description line
+                                // Free-text description line
                                 description += (description ? " " : "") + comment;
                             }
-                        } else if (line.startsWith("function")) {
-                            // Function declaration - handle Class.method, Class:method, and standalone
-                            const funcMatch = line.match(/function\s+(?:(\w+)[\.:])??(\w+)\s*\((.*?)\)/);
+
+                            // Function declarations (global or local)
+                        } else if (line.startsWith("function") || line.startsWith("local function")) {
+                            const funcMatch = line.match(/(?:local\s+)?function\s+(?:(\w+)[\.:])?(\w+)\s*\((.*?)\)/);
                             if (funcMatch) {
                                 const [, className, funcName, params] = funcMatch;
 
@@ -375,18 +394,24 @@
                                     type: type,
                                     description: description,
                                     className: className || null,
-                                    parameters: pendingParams,
+                                    parameters: pendingParams.slice(), // shallow copy
                                     returns: pendingReturn,
                                     rawParams: params,
                                 };
 
                                 functions.push(func);
-
-                                // Reset for next function
-                                description = "";
-                                pendingParams = [];
-                                pendingReturn = { type: "void", description: "" };
                             }
+
+                            // Reset doc state after a function
+                            description = "";
+                            pendingParams = [];
+                            pendingReturn = { type: "void", description: "" };
+
+                            // Any other non-empty, non-comment line: clear stray doc state
+                        } else if (line !== "") {
+                            description = "";
+                            pendingParams = [];
+                            pendingReturn = { type: "void", description: "" };
                         }
                     }
 
