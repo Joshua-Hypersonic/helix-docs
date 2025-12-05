@@ -1,0 +1,16 @@
+---@class Sound
+---Spawns and plays a 2D or 3D sound at runtime.
+---If bIs2D = true, the sound plays as UI / non-spatial.
+---If bIs2D = false, the actor is placed and spatialization/attenuation is applied.
+---@param Location FVector             World location for 3D sounds (ignored for 2D)
+---@param SoundAsset string            Path to USoundBase asset ("/Game/.../MyCue.MyCue")
+---@param bIs2D boolean                True = 2D/UI sound, False = spatial 3D sound
+---@param bAutoDestroy boolean         Destroy actor/component automatically after finish
+---@param Volume number                Volume multiplier (default depends on asset)
+---@param Pitch number                 Pitch multiplier
+---@param Radius number                Inner radius for attenuation
+---@param FalloffDistance number       Distance for attenuation falloff
+---@param AttenuationFunction integer  One of AttenuationFunction enum
+---@param bIsLooping boolean           Enables looping playback
+---@return table Wrapper with .Object (AActor) and .Component (UAudioComponent)
+function Sound(Location, SoundAsset, bIs2D, bAutoDestroy, Volume, Pitch, Radius, FalloffDistance, AttenuationFunction, bIsLooping) end

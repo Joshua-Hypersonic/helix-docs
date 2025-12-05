@@ -1,0 +1,11 @@
+---@class Trigger
+---@param Location FVector
+---@param Rotation FRotator
+---@param Extent FVector
+---@param TriggerType string
+---@param bVisible boolean
+---@param CallbackFunction function
+---@param Color FLinearColor
+---@param OverlapOnlyClasses table
+---@return table
+function Trigger(Location, Rotation, Extent, TriggerType, bVisible, CallbackFunction, Color, OverlapOnlyClasses) end
