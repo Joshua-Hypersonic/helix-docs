@@ -317,8 +317,7 @@
                     let pendingParams = [];
                     let pendingReturn = { type: "void", description: "" };
 
-                    // filePath is the relative path, e.g. "client/native/Foo.lua" or
-                    // "client/native/Character/Movement.lua"
+                    // filePath is the relative path, e.g. "client/constructor/Actor/LevelInstance.lua"
                     const pathParts = filePath.split("/");
 
                     // apiSet: client / server / unknown
@@ -330,19 +329,19 @@
                     // type: native / engine / constructor / general
                     const type = pathParts[1] || "general";
 
-                    // category: folder under type if present, else file base name
+                    // folder-based category: derived from path
                     const fileName = pathParts[pathParts.length - 1] || "";
                     const fileBase = fileName.replace(/\.lua$/i, "");
 
-                    let category = "misc";
+                    let folderCategory = "misc";
                     if (pathParts.length > 3) {
-                        // e.g. client/native/Character/Movement.lua → "Character"
-                        category = pathParts[pathParts.length - 2];
+                        // e.g. client/constructor/Actor/LevelInstance.lua → "Actor"
+                        folderCategory = pathParts[pathParts.length - 2];
                     } else if (pathParts.length > 2) {
-                        // e.g. client/native/Foo.lua → "Foo"
-                        category = fileBase || "misc";
+                        // e.g. client/constructor/Actor.lua → "Actor"
+                        folderCategory = fileBase || "misc";
                     } else {
-                        category = fileBase || "misc";
+                        folderCategory = fileBase || "misc";
                     }
 
                     for (let i = 0; i < lines.length; i++) {
@@ -353,10 +352,9 @@
                             const comment = line.substring(3).trim();
 
                             if (comment.startsWith("@class")) {
-                                // Skip class declarations
+                                // You could capture class docs here later if you want
                                 continue;
                             } else if (comment.startsWith("@param")) {
-                                // @param name type @[out|opt] description...
                                 const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
                                 if (paramMatch) {
                                     const [, name, typeName, modifier, desc] = paramMatch;
@@ -368,7 +366,6 @@
                                     });
                                 }
                             } else if (comment.startsWith("@return")) {
-                                // @return type description...
                                 const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
                                 if (returnMatch) {
                                     pendingReturn = {
@@ -377,7 +374,6 @@
                                     };
                                 }
                             } else if (!comment.startsWith("@")) {
-                                // Free-text description line
                                 description += (description ? " " : "") + comment;
                             }
 
@@ -387,14 +383,19 @@
                             if (funcMatch) {
                                 const [, className, funcName, params] = funcMatch;
 
+                                // 🔑 Logical category: if this is a method, group by class,
+                                // otherwise fall back to folder-based category
+                                const logicalCategory = className || folderCategory;
+
                                 const func = {
                                     name: funcName,
-                                    category: category,
+                                    category: logicalCategory, // used by UI & filters
+                                    folderCategory: folderCategory, // keeps path info if you need it
                                     apiSet: apiSet,
                                     type: type,
                                     description: description,
                                     className: className || null,
-                                    parameters: pendingParams.slice(), // shallow copy
+                                    parameters: pendingParams.slice(),
                                     returns: pendingReturn,
                                     rawParams: params,
                                 };
@@ -620,21 +621,29 @@
                     return;
                 }
 
+                // Optional: group a bit nicer
+                filteredFunctions.sort((a, b) => {
+                    const ca = (a.className || a.category || "").localeCompare(a.className || a.category || "");
+                    if (ca !== 0) return ca;
+                    return a.name.localeCompare(b.name);
+                });
+
                 filteredFunctions.forEach((func) => {
                     const item = document.createElement("div");
                     item.className = "function-item";
-                    if (selectedFunction === func) {
-                        item.classList.add("active");
-                    }
+                    if (selectedFunction === func) item.classList.add("active");
 
                     const badges = Array.isArray(func.apiSet) ? func.apiSet.map((set) => `<span class="api-set-badge ${set}">${set}</span>`).join(" ") : `<span class="api-set-badge ${func.apiSet}">${func.apiSet}</span>`;
 
-                    const typeLabel = func.type ? ` · <span class="function-type">${func.type}</span>` : "";
+                    const displayName = func.className ? `${func.className}.${func.name}` : func.name;
 
                     item.innerHTML = `
-                        <div class="function-name">${func.name}${badges}</div>
-                        <div class="function-category">${func.category}${typeLabel}</div>
-                    `;
+            <div class="function-name">${displayName} ${badges}</div>
+            <div class="function-category">
+                ${func.category}
+                ${func.type ? ` · <span class="function-type">${func.type}</span>` : ""}
+            </div>
+        `;
 
                     item.addEventListener("click", () => {
                         selectedFunction = func;
