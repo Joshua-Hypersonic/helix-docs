@@ -316,11 +316,16 @@
                     let pendingParams = [];
                     let pendingReturn = { type: "void", description: "" };
 
-                    // Extract metadata from file path
                     const pathParts = filePath.split("/");
-                    const apiSet = pathParts[0];
-                    const type = pathParts[1];
-                    const category = pathParts[2];
+
+                    let apiSet = "unknown";
+                    if (pathParts[0] === "client" || pathParts[0] === "server") {
+                        apiSet = pathParts[0];
+                    }
+
+                    // Prevent shift errors if missing folders
+                    const type = pathParts.length > 1 ? pathParts[1] : "general";
+                    const category = pathParts.length > 2 ? pathParts[2] : "misc";
 
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
@@ -538,7 +543,7 @@
                         const parsed = parser.parseLuaFile(content, file.relativePath);
 
                         for (const func of parsed) {
-                            const key = func.name;
+                            const key = func.className ? `${func.className}.${func.name}` : func.name;
 
                             if (functionMap.has(key)) {
                                 // Merge apiSets if same function exists in both client/server
