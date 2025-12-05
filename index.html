@@ -317,7 +317,7 @@
                     let pendingParams = [];
                     let pendingReturn = { type: "void", description: "" };
 
-                    // Track the current @class in this file
+                    // Track the current @class in this file (for grouping only)
                     let currentDocClass = null;
 
                     // filePath is the relative path, e.g. "client/constructor/Actor/WebUI.lua"
@@ -350,17 +350,16 @@
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
 
-                        // Doc comments
+                        // ---- DOC COMMENTS ---------------------------------------------------
                         if (line.startsWith("---")) {
                             const comment = line.substring(3).trim();
 
                             if (comment.startsWith("@class")) {
-                                // Capture the declared class name, e.g. "@class WebUI"
+                                // Capture declared class name for grouping, e.g. "@class WebUI"
                                 const classMatch = comment.match(/@class\s+(\w+)/);
                                 if (classMatch) {
                                     currentDocClass = classMatch[1];
                                 }
-                                // You could also grab a class description here if you want
                                 continue;
                             } else if (comment.startsWith("@param")) {
                                 const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
@@ -382,32 +381,30 @@
                                     };
                                 }
                             } else if (!comment.startsWith("@")) {
+                                // Free-text description line
                                 description += (description ? " " : "") + comment;
                             }
 
-                            // Function declarations (global or local)
+                            // ---- FUNCTION DECLARATIONS -----------------------------------------
                         } else if (line.startsWith("function") || line.startsWith("local function")) {
                             const funcMatch = line.match(/(?:local\s+)?function\s+(?:(\w+)[\.:])?(\w+)\s*\((.*?)\)/);
                             if (funcMatch) {
-                                let [, className, funcName, params] = funcMatch;
+                                const [, classNameFromSig, funcName, params] = funcMatch;
 
-                                // 🔑 If there is no class in the function signature but we have
-                                // an active @class in this file, treat it as a method/ctor of that class.
-                                if (!className && currentDocClass) {
-                                    className = currentDocClass;
-                                }
-
-                                // For the docs UI: group by class if present, fallback to folder category
-                                const logicalCategory = className || folderCategory;
+                                // ✅ Grouping rule:
+                                // - Prefer @class for category (e.g. WebUI)
+                                // - Else use class name from signature
+                                // - Else fall back to folder-based category
+                                const logicalCategory = currentDocClass || classNameFromSig || folderCategory;
 
                                 const func = {
                                     name: funcName,
                                     category: logicalCategory, // used by sidebar & filters
-                                    folderCategory: folderCategory, // original path-based grouping if you ever want it
+                                    folderCategory: folderCategory, // original path grouping if needed
                                     apiSet: apiSet,
                                     type: type,
                                     description: description,
-                                    className: className || null,
+                                    className: classNameFromSig || null, // unchanged – important for your key!
                                     parameters: pendingParams.slice(),
                                     returns: pendingReturn,
                                     rawParams: params,
@@ -421,8 +418,9 @@
                             pendingParams = [];
                             pendingReturn = { type: "void", description: "" };
 
-                            // Any other non-empty, non-comment line: clear stray doc state
+                            // ---- ANY OTHER REAL CODE LINE --------------------------------------
                         } else if (line !== "") {
+                            // Real code line: clear any stray doc state that wasn't attached
                             description = "";
                             pendingParams = [];
                             pendingReturn = { type: "void", description: "" };
