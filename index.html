@@ -317,7 +317,10 @@
                     let pendingParams = [];
                     let pendingReturn = { type: "void", description: "" };
 
-                    // filePath is the relative path, e.g. "client/constructor/Actor/LevelInstance.lua"
+                    // Track the current @class in this file
+                    let currentDocClass = null;
+
+                    // filePath is the relative path, e.g. "client/constructor/Actor/WebUI.lua"
                     const pathParts = filePath.split("/");
 
                     // apiSet: client / server / unknown
@@ -335,7 +338,7 @@
 
                     let folderCategory = "misc";
                     if (pathParts.length > 3) {
-                        // e.g. client/constructor/Actor/LevelInstance.lua → "Actor"
+                        // e.g. client/constructor/Actor/WebUI.lua → "Actor"
                         folderCategory = pathParts[pathParts.length - 2];
                     } else if (pathParts.length > 2) {
                         // e.g. client/constructor/Actor.lua → "Actor"
@@ -352,7 +355,12 @@
                             const comment = line.substring(3).trim();
 
                             if (comment.startsWith("@class")) {
-                                // You could capture class docs here later if you want
+                                // Capture the declared class name, e.g. "@class WebUI"
+                                const classMatch = comment.match(/@class\s+(\w+)/);
+                                if (classMatch) {
+                                    currentDocClass = classMatch[1];
+                                }
+                                // You could also grab a class description here if you want
                                 continue;
                             } else if (comment.startsWith("@param")) {
                                 const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
@@ -381,16 +389,21 @@
                         } else if (line.startsWith("function") || line.startsWith("local function")) {
                             const funcMatch = line.match(/(?:local\s+)?function\s+(?:(\w+)[\.:])?(\w+)\s*\((.*?)\)/);
                             if (funcMatch) {
-                                const [, className, funcName, params] = funcMatch;
+                                let [, className, funcName, params] = funcMatch;
 
-                                // 🔑 Logical category: if this is a method, group by class,
-                                // otherwise fall back to folder-based category
+                                // 🔑 If there is no class in the function signature but we have
+                                // an active @class in this file, treat it as a method/ctor of that class.
+                                if (!className && currentDocClass) {
+                                    className = currentDocClass;
+                                }
+
+                                // For the docs UI: group by class if present, fallback to folder category
                                 const logicalCategory = className || folderCategory;
 
                                 const func = {
                                     name: funcName,
-                                    category: logicalCategory, // used by UI & filters
-                                    folderCategory: folderCategory, // keeps path info if you need it
+                                    category: logicalCategory, // used by sidebar & filters
+                                    folderCategory: folderCategory, // original path-based grouping if you ever want it
                                     apiSet: apiSet,
                                     type: type,
                                     description: description,
