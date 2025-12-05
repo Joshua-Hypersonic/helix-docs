@@ -5,7 +5,7 @@ local Cable = {}
 ---@param Location FVector World position for the cable
 ---@param bEnableVisuals boolean @[opt] Whether to show the cable visually (default: false)
 ---@return table Cable wrapper with .Object (AActor), .CableComponent (UCableComponent), and .PhysicsComponent (UPhysicsConstraintComponent)
-function Cable.new(Location, bEnableVisuals) end
+function Cable(Location, bEnableVisuals) end
 
 ---Attaches the start of a cable to another actor
 ---@param TargetActor AActor The actor to attach to
