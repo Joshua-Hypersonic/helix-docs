@@ -21,39 +21,22 @@
             }
 
             .header {
+                background: #0d0d0d;
                 padding: 1rem 1.5rem;
-                background: #111827;
                 border-bottom: 1px solid #333;
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
             }
 
             .search-container {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-            }
-
-            .search-bar {
-                flex: 1;
-                padding: 0.5rem 0.75rem;
-                border-radius: 4px;
-                border: 1px solid #333;
-                background: #0b1120;
-                color: #e5e7eb;
-                outline: none;
-            }
-
-            .search-bar::placeholder {
-                color: #6b7280;
+                max-width: 600px;
+                margin: 0 auto 1rem auto;
             }
 
             .filter-bar {
                 display: flex;
-                gap: 1rem;
-                flex-wrap: wrap;
+                justify-content: center;
+                gap: 2rem;
                 align-items: center;
+                flex-wrap: wrap;
             }
 
             .filter-group {
@@ -61,17 +44,42 @@
                 align-items: center;
                 gap: 0.5rem;
                 font-size: 0.9rem;
-                color: #9ca3af;
+                color: #a0aec0;
             }
 
             .filter-select {
-                padding: 0.3rem 0.5rem;
+                padding: 0.4rem 0.6rem;
+                background: #111111;
+                border: 1px solid #404040;
                 border-radius: 4px;
-                border: 1px solid #374151;
-                background: #020617;
-                color: #e5e7eb;
+                color: #e0e0e0;
                 font-size: 0.9rem;
+                cursor: pointer;
+            }
+
+            .filter-select:focus {
                 outline: none;
+                border-color: #5c9eff;
+            }
+
+            .search-bar {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                background: #2a2a2a;
+                border: 1px solid #404040;
+                border-radius: 6px;
+                color: #e0e0e0;
+                font-size: 0.95rem;
+            }
+
+            .search-bar::placeholder {
+                color: #6b7280;
+            }
+
+            .search-bar:focus {
+                outline: none;
+                border-color: #5c9eff;
+                background: #333333;
             }
 
             .main-container {
@@ -88,21 +96,18 @@
 
             .function-item {
                 padding: 0.875rem 1.25rem;
-                border-bottom: 1px solid #1f2933;
+                border-bottom: 1px solid #262626;
                 cursor: pointer;
-                transition: background 0.15s ease, border-left 0.15s ease;
-                display: flex;
-                flex-direction: column;
-                gap: 0.1rem;
+                transition: background 0.15s;
             }
 
             .function-item:hover {
-                background: #111827;
+                background: #1f1f1f;
             }
 
             .function-item.active {
-                background: #1f2937;
-                border-left: 3px solid #3b82f6;
+                background: #2a2a2a;
+                border-left: 3px solid #5c9eff;
             }
 
             .function-name {
@@ -113,6 +118,7 @@
             .function-meta {
                 font-size: 0.8rem;
                 color: #9ca3af;
+                margin-top: 0.25rem;
             }
 
             .detail-panel {
@@ -128,60 +134,53 @@
                 font-size: 2rem;
             }
 
-            .detail-content .category-badge {
+            .category-badge {
                 display: inline-block;
                 background: #2a2a2a;
                 padding: 0.25rem 0.75rem;
                 border-radius: 4px;
                 font-size: 0.85rem;
-                color: #888;
+                color: #aaaaaa;
                 margin-bottom: 1.5rem;
             }
 
-            .detail-content h2 {
-                color: #e0e0e0;
-                margin-top: 2rem;
-                margin-bottom: 1rem;
-                font-size: 1.3rem;
-                border-bottom: 1px solid #333;
-                padding-bottom: 0.3rem;
+            .class-functions {
+                margin-top: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
             }
 
-            .detail-content p {
-                line-height: 1.6;
-                color: #d1d5db;
-                margin-bottom: 0.75rem;
+            .function-card {
+                background: #111111;
+                border-radius: 6px;
+                padding: 1rem 1.25rem;
+                border: 1px solid #262626;
             }
 
-            .param-list {
-                list-style: none;
-                padding-left: 0;
-                margin-left: 0;
-                margin-bottom: 1rem;
+            .function-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.4rem;
             }
 
-            .param-list li {
-                padding: 0.3rem 0;
-                border-bottom: 1px dashed #333;
-                font-size: 0.9rem;
+            .function-card-header h2 {
+                font-size: 1.05rem;
+                color: #f3f4f6;
             }
 
-            .param-name {
-                font-weight: 600;
-                color: #f9fafb;
-                margin-right: 0.4rem;
-            }
-
-            .param-type {
-                color: #60a5fa;
-                font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-                font-size: 0.85rem;
-            }
-
-            .param-modifier {
+            .function-badges {
+                display: flex;
+                gap: 0.4rem;
+                flex-wrap: wrap;
                 font-size: 0.75rem;
-                color: #fcd34d;
-                margin-left: 0.25rem;
+            }
+
+            .function-description {
+                font-size: 0.9rem;
+                color: #d1d5db;
+                margin-bottom: 0.5rem;
             }
 
             .api-set-badge {
@@ -189,7 +188,6 @@
                 padding: 0.15rem 0.5rem;
                 font-size: 0.75rem;
                 border-radius: 999px;
-                margin-left: 0.5rem;
                 background: #374151;
                 color: #d1d5db;
             }
@@ -204,12 +202,16 @@
                 color: #6ee7b7;
             }
 
+            .api-set-badge.unknown {
+                background: #4b5563;
+                color: #e5e7eb;
+            }
+
             .type-badge {
                 display: inline-block;
                 padding: 0.15rem 0.5rem;
                 font-size: 0.75rem;
                 border-radius: 999px;
-                margin-left: 0.5rem;
                 background: #374151;
                 color: #d1d5db;
             }
@@ -227,6 +229,52 @@
             .type-badge.engine {
                 background: #064e3b;
                 color: #6ee7b7;
+            }
+
+            .detail-content h2.section-title {
+                color: #e0e0e0;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+                font-size: 1.1rem;
+                border-bottom: 1px solid #333;
+                padding-bottom: 0.2rem;
+            }
+
+            .param-list,
+            .return-list {
+                list-style: none;
+                margin: 0.5rem 0 0.5rem 0;
+                padding-left: 0;
+                font-size: 0.9rem;
+            }
+
+            .param-list li,
+            .return-list li {
+                padding: 0.4rem 0;
+                border-bottom: 1px dashed #333;
+            }
+
+            .param-name {
+                color: #7dd3fc;
+                font-weight: 600;
+                margin-right: 0.25rem;
+            }
+
+            .param-type {
+                color: #93c5fd;
+                font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-size: 0.85rem;
+            }
+
+            .param-modifier {
+                font-size: 0.75rem;
+                color: #fcd34d;
+                margin-left: 0.25rem;
+            }
+
+            .dim {
+                color: #9ca3af;
+                font-size: 0.85rem;
             }
 
             .loading {
@@ -294,13 +342,24 @@
                         <option value="engine">Engine</option>
                     </select>
                 </div>
+                <!-- Keeping Language filter for visual consistency; it no longer changes anything -->
+                <div class="filter-group">
+                    <label>Language:</label>
+                    <select id="languageFilter" class="filter-select">
+                        <option value="lua">Lua</option>
+                        <option value="js">JS</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class="main-container">
-            <div class="function-list" id="classList">
+            <!-- LEFT: classes -->
+            <div class="function-list" id="functionList">
                 <div class="loading">Loading classes...</div>
             </div>
+
+            <!-- RIGHT: functions for selected class -->
             <div class="detail-panel" id="detailPanel">
                 <div class="no-selection">
                     <h2>Select a class to view its functions</h2>
@@ -309,7 +368,7 @@
         </div>
 
         <script>
-            // LuaDoc Parser (unchanged from original)
+            // LuaDoc Parser
             class LuaDocParser {
                 parseLuaFile(content, filePath) {
                     const lines = content.split(/\r?\n/);
@@ -318,26 +377,24 @@
                     let description = "";
                     let pendingParams = [];
                     let pendingReturn = { type: "void", description: "" };
-
-                    // Track the current @class in this file (for grouping only)
                     let currentDocClass = null;
 
-                    // filePath is the relative path, e.g. "client/constructor/Actor/WebUI.lua"
                     const pathParts = filePath.split("/");
 
                     // apiSet: client / server / unknown
                     let apiSet = "unknown";
-                    if (pathParts.includes("client")) apiSet = "client";
-                    if (pathParts.includes("server")) apiSet = "server";
+                    if (pathParts[0] === "client" || pathParts[0] === "server") {
+                        apiSet = pathParts[0];
+                    }
 
-                    // type: native / constructor / engine / general
+                    // type: native / constructor / engine / general (2nd segment)
                     let type = "general";
-                    if (pathParts.includes("native")) type = "native";
-                    if (pathParts.includes("constructor")) type = "constructor";
-                    if (pathParts.includes("engine")) type = "engine";
+                    if (pathParts[1]) {
+                        type = pathParts[1];
+                    }
 
-                    // Infer folder-based category as a fallback; e.g. "Actor"
-                    const fileName = pathParts[pathParts.length - 1];
+                    // folder-based category from path
+                    const fileName = pathParts[pathParts.length - 1] || "";
                     const fileBase = fileName.replace(/\.lua$/i, "");
 
                     let folderCategory = "misc";
@@ -354,18 +411,19 @@
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
 
-                        // ---- DOC COMMENTS ---------------------------
                         if (line.startsWith("---")) {
+                            // Doc comment line
                             const comment = line.substring(3).trim();
 
                             if (comment.startsWith("@class")) {
-                                // Capture declared class name for grouping, e.g. "@class WebUI"
                                 const classMatch = comment.match(/@class\s+(\w+)/);
                                 if (classMatch) {
                                     currentDocClass = classMatch[1];
                                 }
                                 continue;
-                            } else if (comment.startsWith("@param")) {
+                            }
+
+                            if (comment.startsWith("@param")) {
                                 const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
                                 if (paramMatch) {
                                     const [, name, typeName, modifier, desc] = paramMatch;
@@ -376,7 +434,10 @@
                                         description: (desc || "").trim(),
                                     });
                                 }
-                            } else if (comment.startsWith("@return")) {
+                                continue;
+                            }
+
+                            if (comment.startsWith("@return")) {
                                 const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
                                 if (returnMatch) {
                                     pendingReturn = {
@@ -384,38 +445,38 @@
                                         description: returnMatch[2] ? returnMatch[2].trim() : "",
                                     };
                                 }
-                            } else if (!comment.startsWith("@")) {
-                                // Free-text description line
+                                continue;
+                            }
+
+                            if (!comment.startsWith("@")) {
                                 description += (description ? " " : "") + comment;
                             }
 
-                            // ---- FUNCTION SIGNATURE --------------------
-                        } else if (line.startsWith("function")) {
-                            // Reset className from signature; e.g. "WebUI:Show()" or "WebUI.Show()"
+                            continue;
+                        }
+
+                        // Function signatures
+                        if (line.startsWith("function") || line.startsWith("local function")) {
                             let classNameFromSig = null;
                             let functionName = null;
                             let params = "";
 
-                            // function WebUI.Show(param1, param2)
-                            let match = line.match(/^function\s+([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*\((.*)\)/);
+                            // Normalize to remove "local" prefix for matching
+                            const sigLine = line.replace(/^local\s+/, "");
+
+                            // function Class.Method(...)
+                            let match = sigLine.match(/^function\s+([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*\((.*)\)/) || sigLine.match(/^function\s+([A-Za-z_]\w*):([A-Za-z_]\w*)\s*\((.*)\)/);
+
                             if (match) {
                                 classNameFromSig = match[1];
                                 functionName = match[2];
                                 params = match[3];
                             } else {
-                                // function WebUI:Show(param1, param2)
-                                match = line.match(/^function\s+([A-Za-z_]\w*):([A-Za-z_]\w*)\s*\((.*)\)/);
+                                // function foo(...)
+                                match = sigLine.match(/^function\s+([A-Za-z_]\w*)\s*\((.*)\)/);
                                 if (match) {
-                                    classNameFromSig = match[1];
-                                    functionName = match[2];
-                                    params = match[3];
-                                } else {
-                                    // function Show(param1, param2)
-                                    match = line.match(/^function\s+([A-Za-z_]\w*)\s*\((.*)\)/);
-                                    if (match) {
-                                        functionName = match[1];
-                                        params = match[2];
-                                    }
+                                    functionName = match[1];
+                                    params = match[2];
                                 }
                             }
 
@@ -432,7 +493,7 @@
                                 .map((p) => p.trim())
                                 .filter((p) => p.length > 0);
 
-                            // If we have fewer @param entries than parameters in the signature, pad them with generic entries
+                            // Ensure each param has a doc entry
                             if (pendingParams.length < paramList.length) {
                                 for (let idx = pendingParams.length; idx < paramList.length; idx++) {
                                     const paramName = paramList[idx];
@@ -445,18 +506,15 @@
                                 }
                             }
 
-                            // Determine category:
-                            //  1) use currentDocClass if it was declared via @class
-                            //  2) else fall back to folderCategory
-                            const category = currentDocClass || folderCategory || "General";
+                            const logicalCategory = currentDocClass || folderCategory || "General";
 
                             const func = {
                                 name: functionName,
-                                category: category,
-                                folderCategory: folderCategory,
-                                apiSet: apiSet,
-                                type: type,
-                                description: description,
+                                category: logicalCategory,
+                                folderCategory,
+                                apiSet,
+                                type,
+                                description,
                                 className: classNameFromSig || null,
                                 parameters: pendingParams.slice(),
                                 returns: pendingReturn,
@@ -469,10 +527,11 @@
                             description = "";
                             pendingParams = [];
                             pendingReturn = { type: "void", description: "" };
+                            continue;
+                        }
 
-                            // ---- ANY OTHER REAL CODE LINE --------------------------------------
-                        } else if (line !== "") {
-                            // Real code line: clear any stray doc state that wasn't attached
+                        // Any other real code line: reset doc state
+                        if (line !== "") {
                             description = "";
                             pendingParams = [];
                             pendingReturn = { type: "void", description: "" };
@@ -489,15 +548,11 @@
             const GITHUB_BRANCH = "main";
             const DOCS_PATH = "docs";
 
-            // State
+            // Main Application State
             let allFunctions = [];
             let filteredFunctions = [];
             let classMap = {};
             let selectedClassKey = null;
-            let currentApiSet = "all";
-            let currentCategory = "all";
-            let currentType = "all";
-            const parser = new LuaDocParser();
 
             async function fetchGitHubDirectory(path) {
                 const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`;
@@ -535,6 +590,7 @@
 
                 for (const item of contents) {
                     const itemRelativePath = relativePath ? `${relativePath}/${item.name}` : item.name;
+
                     if (item.type === "file" && item.name.endsWith(".lua")) {
                         files.push({
                             path: item.path,
@@ -549,8 +605,22 @@
                 return files;
             }
 
+            function populateCategoryFilter() {
+                const categories = [...new Set(allFunctions.map((f) => f.category).filter((c) => c && c.trim().length > 0))].sort();
+
+                const categoryFilter = document.getElementById("categoryFilter");
+                categoryFilter.innerHTML = '<option value="all">All</option>';
+
+                categories.forEach((category) => {
+                    const option = document.createElement("option");
+                    option.value = category.toLowerCase();
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                });
+            }
+
             function applyFiltersAndRender() {
-                const searchTerm = document.getElementById("searchBar").value.toLowerCase();
+                const searchTerm = document.getElementById("searchBar").value.toLowerCase() || "";
                 const categoryFilter = document.getElementById("categoryFilter").value;
                 const apiSetFilter = document.getElementById("apiSetFilter").value;
                 const typeFilter = document.getElementById("typeFilter").value;
@@ -573,15 +643,17 @@
                         }
                     }
 
-                    if (typeFilter !== "all" && func.type !== typeFilter) return false;
+                    if (typeFilter !== "all" && func.type !== typeFilter) {
+                        return false;
+                    }
 
                     return true;
                 });
 
-                // Build class map from filtered functions
                 classMap = {};
                 for (const func of filteredFunctions) {
                     const key = func.className || func.category || func.folderCategory || "Global";
+
                     if (!classMap[key]) {
                         classMap[key] = {
                             key,
@@ -603,21 +675,25 @@
             }
 
             function renderClassList(classKeys) {
-                const listContainer = document.getElementById("classList");
-                listContainer.innerHTML = "";
+                const listEl = document.getElementById("functionList");
+                listEl.innerHTML = "";
 
-                if (!classKeys.length) {
-                    listContainer.innerHTML = "<div class='loading'>No classes found</div>";
+                if (classKeys.length === 0) {
+                    listEl.innerHTML = '<div class="loading">No classes found</div>';
                     const detailEl = document.getElementById("detailPanel");
-                    detailEl.innerHTML = "<div class='no-selection'><h2>No classes match the current filters</h2></div>";
+                    detailEl.innerHTML = '<div class="no-selection"><h2>No classes match the current filters</h2></div>';
                     return;
                 }
 
                 for (const key of classKeys) {
                     const group = classMap[key];
+
                     const item = document.createElement("div");
                     item.className = "function-item" + (key === selectedClassKey ? " active" : "");
-                    item.textContent = `${group.name} (${group.functions.length})`;
+                    item.innerHTML = `
+                        <div class="function-name">${group.name}</div>
+                        <div class="function-meta">${group.functions.length} function${group.functions.length === 1 ? "" : "s"}</div>
+                    `;
 
                     item.addEventListener("click", () => {
                         selectedClassKey = key;
@@ -625,7 +701,7 @@
                         renderClassDetail(key);
                     });
 
-                    listContainer.appendChild(item);
+                    listEl.appendChild(item);
                 }
             }
 
@@ -635,78 +711,132 @@
 
                 const group = classMap[classKey];
                 if (!group) {
-                    detailEl.innerHTML = "<div class='no-selection'><h2>Select a class to view its functions</h2></div>";
+                    detailEl.innerHTML = '<div class="no-selection"><h2>Select a class to view its functions</h2></div>';
                     return;
                 }
 
                 const functions = group.functions.slice().sort((a, b) => a.name.localeCompare(b.name));
 
-                let html = "<div class='detail-content'>";
-                html += `<h1>${group.name}</h1>`;
-                html += `<span class="category-badge">Functions: ${functions.length}</span>`;
+                const wrapper = document.createElement("div");
+                wrapper.className = "detail-content";
+
+                const title = document.createElement("h1");
+                title.textContent = group.name;
+                wrapper.appendChild(title);
+
+                const badge = document.createElement("span");
+                badge.className = "category-badge";
+                badge.textContent = `Functions: ${functions.length}`;
+                wrapper.appendChild(badge);
+
+                const funcsContainer = document.createElement("div");
+                funcsContainer.className = "class-functions";
 
                 functions.forEach((func) => {
-                    const apiSetBadge = (() => {
-                        if (Array.isArray(func.apiSet)) {
-                            const text = func.apiSet.join(" / ");
-                            return `<span class="api-set-badge">${text}</span>`;
-                        } else if (func.apiSet) {
-                            return `<span class="api-set-badge ${func.apiSet}">${func.apiSet}</span>`;
-                        } else {
-                            return `<span class="api-set-badge unknown">unknown</span>`;
-                        }
-                    })();
+                    const card = document.createElement("div");
+                    card.className = "function-card";
 
-                    const paramsHTML =
-                        func.parameters && func.parameters.length > 0
-                            ? func.parameters
-                                  .map((p) => {
-                                      let modifierBadge = "";
-                                      if (p.modifier === "opt") modifierBadge = '<span class="param-modifier">[optional]</span>';
-                                      if (p.modifier === "out") modifierBadge = '<span class="param-modifier">[output]</span>';
+                    const header = document.createElement("div");
+                    header.className = "function-card-header";
 
-                                      return `<li><span class="param-name">${p.name}</span> <span class="param-type">${p.type}</span> ${modifierBadge}${p.description ? " - " + p.description : ""}</li>`;
-                                  })
-                                  .join("")
-                            : "<li>No parameters</li>";
+                    const nameEl = document.createElement("h2");
+                    nameEl.textContent = func.name;
+                    header.appendChild(nameEl);
 
-                    const returns = func.returns || { type: "void", description: "" };
-                    const returnsHTML = `<p><span class="param-type">${returns.type}</span>${returns.description ? " - " + returns.description : ""}</p>`;
+                    const badges = document.createElement("div");
+                    badges.className = "function-badges";
 
-                    html += `
-                        <h2>${func.name}</h2>
-                        ${apiSetBadge}
-                        <p>${func.description || "No description available."}</p>
-                        <h2>Parameters</h2>
-                        <ul class="param-list">${paramsHTML}</ul>
-                        <h2>Returns</h2>
-                        ${returnsHTML}
+                    // apiSet badge
+                    const apiBadge = document.createElement("span");
+                    const apiValue = Array.isArray(func.apiSet) ? func.apiSet.join(" / ") : func.apiSet || "unknown";
+                    const apiClass = Array.isArray(func.apiSet) ? "" : func.apiSet || "unknown";
+
+                    apiBadge.className = "api-set-badge " + apiClass;
+                    apiBadge.textContent = apiValue;
+                    badges.appendChild(apiBadge);
+
+                    // type badge
+                    const typeBadge = document.createElement("span");
+                    typeBadge.className = "type-badge " + (func.type || "general");
+                    typeBadge.textContent = func.type || "general";
+                    badges.appendChild(typeBadge);
+
+                    header.appendChild(badges);
+                    card.appendChild(header);
+
+                    const desc = document.createElement("p");
+                    desc.className = "function-description";
+                    desc.textContent = func.description || "No description available.";
+                    card.appendChild(desc);
+
+                    // Parameters
+                    const paramsTitle = document.createElement("h3");
+                    paramsTitle.className = "section-title";
+                    paramsTitle.textContent = "Parameters";
+                    card.appendChild(paramsTitle);
+
+                    if (func.parameters && func.parameters.length > 0) {
+                        const ul = document.createElement("ul");
+                        ul.className = "param-list";
+                        func.parameters.forEach((p) => {
+                            const li = document.createElement("li");
+                            let modifier = "";
+                            if (p.modifier === "opt") {
+                                modifier = '<span class="param-modifier">[optional]</span>';
+                            } else if (p.modifier === "out") {
+                                modifier = '<span class="param-modifier">[output]</span>';
+                            }
+                            li.innerHTML = `
+                                <span class="param-name">${p.name}</span>
+                                <span class="param-type">${p.type}</span>
+                                ${modifier}
+                                ${p.description ? " - " + p.description : ""}
+                            `;
+                            ul.appendChild(li);
+                        });
+                        card.appendChild(ul);
+                    } else {
+                        const p = document.createElement("p");
+                        p.className = "dim";
+                        p.textContent = "No parameters.";
+                        card.appendChild(p);
+                    }
+
+                    // Returns
+                    const returnsTitle = document.createElement("h3");
+                    returnsTitle.className = "section-title";
+                    returnsTitle.textContent = "Returns";
+                    card.appendChild(returnsTitle);
+
+                    const returns = func.returns || {
+                        type: "void",
+                        description: "",
+                    };
+                    const returnsList = document.createElement("ul");
+                    returnsList.className = "return-list";
+
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <span class="param-type">${returns.type}</span>
+                        ${returns.description ? " - " + returns.description : ""}
                     `;
+                    returnsList.appendChild(li);
+                    card.appendChild(returnsList);
+
+                    funcsContainer.appendChild(card);
                 });
 
-                html += "</div>";
-                detailEl.innerHTML = html;
-            }
-
-            function populateCategoryFilter() {
-                const categories = [...new Set(allFunctions.map((f) => f.category).filter(Boolean))].sort();
-                const categoryFilter = document.getElementById("categoryFilter");
-
-                categoryFilter.innerHTML = '<option value="all">All</option>';
-
-                categories.forEach((category) => {
-                    const option = document.createElement("option");
-                    option.value = category.toLowerCase();
-                    option.textContent = category;
-                    categoryFilter.appendChild(option);
-                });
+                wrapper.appendChild(funcsContainer);
+                detailEl.appendChild(wrapper);
             }
 
             async function loadFunctions() {
-                const listEl = document.getElementById("classList");
+                const listEl = document.getElementById("functionList");
                 listEl.innerHTML = '<div class="loading">Loading classes from GitHub...</div>';
 
                 try {
+                    const parser = new LuaDocParser();
+
                     const clientFiles = await recursivelyFindLuaFiles(`${DOCS_PATH}/client`, "client");
                     const serverFiles = await recursivelyFindLuaFiles(`${DOCS_PATH}/server`, "server");
                     const allFiles = [...clientFiles, ...serverFiles];
@@ -727,7 +857,7 @@
                                 if (!Array.isArray(existing.apiSet)) {
                                     existing.apiSet = [existing.apiSet];
                                 }
-                                if (!existing.apiSet.includes(func.apiSet)) {
+                                if (func.apiSet && !existing.apiSet.includes(func.apiSet)) {
                                     existing.apiSet.push(func.apiSet);
                                 }
                             } else {
@@ -747,23 +877,26 @@
                 }
             }
 
+            // Event wiring
             document.getElementById("searchBar").addEventListener("input", () => {
                 applyFiltersAndRender();
             });
 
-            document.getElementById("categoryFilter").addEventListener("change", (e) => {
-                currentCategory = e.target.value;
+            document.getElementById("categoryFilter").addEventListener("change", () => {
                 applyFiltersAndRender();
             });
 
-            document.getElementById("apiSetFilter").addEventListener("change", (e) => {
-                currentApiSet = e.target.value;
+            document.getElementById("apiSetFilter").addEventListener("change", () => {
                 applyFiltersAndRender();
             });
 
-            document.getElementById("typeFilter").addEventListener("change", (e) => {
-                currentType = e.target.value;
+            document.getElementById("typeFilter").addEventListener("change", () => {
                 applyFiltersAndRender();
+            });
+
+            // Language filter kept for UI; no behavior now
+            document.getElementById("languageFilter").addEventListener("change", () => {
+                // Intentionally does nothing; syntax/examples removed
             });
 
             // Initialize
