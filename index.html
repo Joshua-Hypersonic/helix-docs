@@ -460,23 +460,34 @@
                             let classNameFromSig = null;
                             let functionName = null;
                             let params = "";
+                            let callStyle = null; // ".", ":", or null for global
 
                             // Normalize to remove "local" prefix for matching
                             const sigLine = line.replace(/^local\s+/, "");
 
                             // function Class.Method(...)
-                            let match = sigLine.match(/^function\s+([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*\((.*)\)/) || sigLine.match(/^function\s+([A-Za-z_]\w*):([A-Za-z_]\w*)\s*\((.*)\)/);
-
+                            let match = sigLine.match(/^function\s+([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*\((.*)\)/);
                             if (match) {
                                 classNameFromSig = match[1];
                                 functionName = match[2];
                                 params = match[3];
+                                callStyle = "."; // static / namespace style
                             } else {
-                                // function foo(...)
-                                match = sigLine.match(/^function\s+([A-Za-z_]\w*)\s*\((.*)\)/);
+                                // function Class:Method(...)
+                                match = sigLine.match(/^function\s+([A-Za-z_]\w*):([A-Za-z_]\w*)\s*\((.*)\)/);
                                 if (match) {
-                                    functionName = match[1];
-                                    params = match[2];
+                                    classNameFromSig = match[1];
+                                    functionName = match[2];
+                                    params = match[3];
+                                    callStyle = ":"; // instance style
+                                } else {
+                                    // function foo(...)
+                                    match = sigLine.match(/^function\s+([A-Za-z_]\w*)\s*\((.*)\)/);
+                                    if (match) {
+                                        functionName = match[1];
+                                        params = match[2];
+                                        callStyle = null; // global / free function
+                                    }
                                 }
                             }
 
@@ -516,6 +527,7 @@
                                 type,
                                 description,
                                 className: classNameFromSig || null,
+                                callStyle, // <--- NEW
                                 parameters: pendingParams.slice(),
                                 returns: pendingReturn,
                                 rawParams: params,
@@ -540,6 +552,77 @@
 
                     return functions;
                 }
+            }
+
+            // ---------- Example helpers (Lua only) ----------
+
+            function sampleValueForType(typeName, paramName) {
+                if (!typeName) return "value";
+
+                const t = typeName.toLowerCase();
+
+                if (t === "string" || t === "std::string") return `"${paramName || "text"}"`;
+                if (t === "number" || t === "float" || t === "double" || t === "int") return "0";
+                if (t === "boolean" || t === "bool") return "true";
+                if (t === "table") return "{}";
+                if (t === "function") return "function() end";
+                if (t === "vector" || t === "vector3") return "Vector(0, 0, 0)";
+                if (t === "color" || t === "colour") return "Color(255, 255, 255)";
+
+                // Class-like types: start with uppercase letter
+                if (/^[A-Z]\w*$/.test(typeName)) return `${typeName}.new()`;
+
+                return "value";
+            }
+
+            function sampleValueForParam(p) {
+                const name = (p.name || "").toLowerCase();
+                const type = (p.type || "").toLowerCase();
+
+                if (name.startsWith("is") || name.startsWith("has") || type === "bool" || type === "boolean") {
+                    return "true";
+                }
+                if (name.includes("count") || name.includes("index") || name.includes("id")) {
+                    return "0";
+                }
+                if (name.includes("name") || name.includes("title") || name.includes("text")) {
+                    return `"${p.name || "text"}"`;
+                }
+
+                return sampleValueForType(p.type, p.name);
+            }
+
+            function generateLuaExample(func) {
+                // Work out Class / operator
+                let qualifier = "";
+                let callOp = "";
+
+                if (func.className && func.callStyle === ":") {
+                    qualifier = func.className;
+                    callOp = ":";
+                } else if (func.className && func.callStyle === ".") {
+                    qualifier = func.className;
+                    callOp = ".";
+                } else {
+                    qualifier = "";
+                    callOp = "";
+                }
+
+                const args = (func.parameters || []).map((p) => sampleValueForParam(p)).join(", ");
+
+                let callText;
+                if (qualifier) {
+                    callText = `${qualifier}${callOp}${func.name}(${args})`;
+                } else {
+                    callText = `${func.name}(${args})`;
+                }
+
+                const returns = func.returns || { type: "void" };
+                if (returns.type && returns.type.toLowerCase() !== "void") {
+                    return `local result = ${callText}`;
+                }
+
+                return callText;
             }
 
             // GitHub Configuration
@@ -816,12 +899,21 @@
                     returnsList.className = "return-list";
 
                     const li = document.createElement("li");
-                    li.innerHTML = `
-                        <span class="param-type">${returns.type}</span>
-                        ${returns.description ? " - " + returns.description : ""}
-                    `;
+                    li.innerHTML = `<span class="param-type">${returns.type}</span>${returns.description ? " - " + returns.description : ""}`;
                     returnsList.appendChild(li);
                     card.appendChild(returnsList);
+
+                    // Example (Lua)
+                    const exampleTitle = document.createElement("h3");
+                    exampleTitle.className = "section-title";
+                    exampleTitle.textContent = "Example";
+                    card.appendChild(exampleTitle);
+
+                    const pre = document.createElement("pre");
+                    const code = document.createElement("code");
+                    code.textContent = generateLuaExample(func);
+                    pre.appendChild(code);
+                    card.appendChild(pre);
 
                     funcsContainer.appendChild(card);
                 });
