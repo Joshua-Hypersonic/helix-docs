@@ -16,24 +16,43 @@
                 background: #1a1a1a;
                 color: #e0e0e0;
                 height: 100vh;
-                overflow: hidden;
+                display: flex;
+                flex-direction: column;
             }
 
             .header {
-                background: #0d0d0d;
                 padding: 1rem 1.5rem;
+                background: #111827;
                 border-bottom: 1px solid #333;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
             }
 
             .search-container {
-                max-width: 600px;
-                margin: 0 auto 1rem auto;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .search-bar {
+                flex: 1;
+                padding: 0.5rem 0.75rem;
+                border-radius: 4px;
+                border: 1px solid #333;
+                background: #0b1120;
+                color: #e5e7eb;
+                outline: none;
+            }
+
+            .search-bar::placeholder {
+                color: #6b7280;
             }
 
             .filter-bar {
                 display: flex;
-                justify-content: center;
-                gap: 2rem;
+                gap: 1rem;
+                flex-wrap: wrap;
                 align-items: center;
             }
 
@@ -41,42 +60,18 @@
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
-            }
-
-            .filter-group label {
-                color: #888;
                 font-size: 0.9rem;
+                color: #9ca3af;
             }
 
             .filter-select {
-                padding: 0.5rem 0.75rem;
-                background: #2a2a2a;
-                border: 1px solid #404040;
+                padding: 0.3rem 0.5rem;
                 border-radius: 4px;
-                color: #e0e0e0;
+                border: 1px solid #374151;
+                background: #020617;
+                color: #e5e7eb;
                 font-size: 0.9rem;
-                cursor: pointer;
-            }
-
-            .filter-select:focus {
                 outline: none;
-                border-color: #5c9eff;
-            }
-
-            .search-bar {
-                width: 100%;
-                padding: 0.75rem 1rem;
-                background: #2a2a2a;
-                border: 1px solid #404040;
-                border-radius: 6px;
-                color: #e0e0e0;
-                font-size: 0.95rem;
-            }
-
-            .search-bar:focus {
-                outline: none;
-                border-color: #5c9eff;
-                background: #333;
             }
 
             .main-container {
@@ -93,54 +88,31 @@
 
             .function-item {
                 padding: 0.875rem 1.25rem;
-                border-bottom: 1px solid #262626;
+                border-bottom: 1px solid #1f2933;
                 cursor: pointer;
-                transition: background 0.15s;
+                transition: background 0.15s ease, border-left 0.15s ease;
+                display: flex;
+                flex-direction: column;
+                gap: 0.1rem;
             }
 
             .function-item:hover {
-                background: #1f1f1f;
+                background: #111827;
             }
 
             .function-item.active {
-                background: #2a2a2a;
-                border-left: 3px solid #5c9eff;
+                background: #1f2937;
+                border-left: 3px solid #3b82f6;
             }
 
             .function-name {
-                font-weight: 600;
-                color: #5c9eff;
                 font-size: 0.95rem;
-                margin-bottom: 0.25rem;
+                color: #e5e7eb;
             }
 
-            .function-category {
+            .function-meta {
                 font-size: 0.8rem;
-                color: #888;
-            }
-
-            .function-type {
-                color: #aaa;
-                text-transform: capitalize;
-            }
-
-            .api-set-badge {
-                display: inline-block;
-                padding: 0.15rem 0.5rem;
-                border-radius: 3px;
-                font-size: 0.75rem;
-                margin-left: 0.5rem;
-                font-weight: 500;
-            }
-
-            .api-set-badge.client {
-                background: #1e40af;
-                color: #93c5fd;
-            }
-
-            .api-set-badge.server {
-                background: #065f46;
-                color: #6ee7b7;
+                color: #9ca3af;
             }
 
             .detail-panel {
@@ -172,74 +144,111 @@
                 margin-bottom: 1rem;
                 font-size: 1.3rem;
                 border-bottom: 1px solid #333;
-                padding-bottom: 0.5rem;
+                padding-bottom: 0.3rem;
             }
 
             .detail-content p {
                 line-height: 1.6;
-                margin-bottom: 1rem;
-                color: #b0b0b0;
-            }
-
-            .code-block {
-                background: #0d0d0d;
-                border: 1px solid #333;
-                border-radius: 6px;
-                padding: 1rem;
-                margin: 1rem 0;
-                overflow-x: auto;
-            }
-
-            .code-block code {
-                color: #7dd3fc;
-                font-family: "Courier New", monospace;
-                font-size: 0.9rem;
-                white-space: pre-wrap;
+                color: #d1d5db;
+                margin-bottom: 0.75rem;
             }
 
             .param-list {
                 list-style: none;
-                margin: 1rem 0;
+                padding-left: 0;
+                margin-left: 0;
+                margin-bottom: 1rem;
             }
 
             .param-list li {
-                padding: 0.5rem;
-                margin: 0.5rem 0;
-                background: #0d0d0d;
-                border-left: 3px solid #5c9eff;
-                border-radius: 3px;
+                padding: 0.3rem 0;
+                border-bottom: 1px dashed #333;
+                font-size: 0.9rem;
             }
 
             .param-name {
-                color: #7dd3fc;
                 font-weight: 600;
+                color: #f9fafb;
+                margin-right: 0.4rem;
             }
 
             .param-type {
-                color: #fbbf24;
-                font-style: italic;
+                color: #60a5fa;
+                font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-size: 0.85rem;
             }
 
             .param-modifier {
-                color: #f87171;
-                font-size: 0.85em;
-                margin-left: 0.5rem;
+                font-size: 0.75rem;
+                color: #fcd34d;
+                margin-left: 0.25rem;
             }
 
-            .no-selection {
-                text-align: center;
-                color: #666;
-                padding-top: 3rem;
+            .api-set-badge {
+                display: inline-block;
+                padding: 0.15rem 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 999px;
+                margin-left: 0.5rem;
+                background: #374151;
+                color: #d1d5db;
+            }
+
+            .api-set-badge.client {
+                background: #1e40af;
+                color: #93c5fd;
+            }
+
+            .api-set-badge.server {
+                background: #065f46;
+                color: #6ee7b7;
+            }
+
+            .type-badge {
+                display: inline-block;
+                padding: 0.15rem 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 999px;
+                margin-left: 0.5rem;
+                background: #374151;
+                color: #d1d5db;
+            }
+
+            .type-badge.native {
+                background: #7c2d12;
+                color: #fed7aa;
+            }
+
+            .type-badge.constructor {
+                background: #4a044e;
+                color: #f9a8d4;
+            }
+
+            .type-badge.engine {
+                background: #064e3b;
+                color: #6ee7b7;
             }
 
             .loading {
+                padding: 1rem;
+                color: #9ca3af;
                 text-align: center;
-                color: #888;
-                padding: 2rem;
+            }
+
+            .no-selection {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: #9ca3af;
+            }
+
+            .no-selection h2 {
+                font-weight: 400;
             }
 
             ::-webkit-scrollbar {
-                width: 10px;
+                width: 8px;
             }
 
             ::-webkit-scrollbar-track {
@@ -259,7 +268,7 @@
     <body>
         <div class="header">
             <div class="search-container">
-                <input type="text" class="search-bar" id="searchBar" placeholder="Search functions..." />
+                <input type="text" class="search-bar" id="searchBar" placeholder="Search classes or functions..." />
             </div>
             <div class="filter-bar">
                 <div class="filter-group">
@@ -285,29 +294,22 @@
                         <option value="engine">Engine</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <label>Language:</label>
-                    <select id="languageFilter" class="filter-select">
-                        <option value="lua">Lua</option>
-                        <option value="js">JS</option>
-                    </select>
-                </div>
             </div>
         </div>
 
         <div class="main-container">
-            <div class="function-list" id="functionList">
-                <div class="loading">Loading functions...</div>
+            <div class="function-list" id="classList">
+                <div class="loading">Loading classes...</div>
             </div>
             <div class="detail-panel" id="detailPanel">
                 <div class="no-selection">
-                    <h2>Select a function to view details</h2>
+                    <h2>Select a class to view its functions</h2>
                 </div>
             </div>
         </div>
 
         <script>
-            // LuaDoc Parser
+            // LuaDoc Parser (unchanged from original)
             class LuaDocParser {
                 parseLuaFile(content, filePath) {
                     const lines = content.split(/\r?\n/);
@@ -325,15 +327,17 @@
 
                     // apiSet: client / server / unknown
                     let apiSet = "unknown";
-                    if (pathParts[0] === "client" || pathParts[0] === "server") {
-                        apiSet = pathParts[0];
-                    }
+                    if (pathParts.includes("client")) apiSet = "client";
+                    if (pathParts.includes("server")) apiSet = "server";
 
-                    // type: native / engine / constructor / general
-                    const type = pathParts[1] || "general";
+                    // type: native / constructor / engine / general
+                    let type = "general";
+                    if (pathParts.includes("native")) type = "native";
+                    if (pathParts.includes("constructor")) type = "constructor";
+                    if (pathParts.includes("engine")) type = "engine";
 
-                    // folder-based category: derived from path
-                    const fileName = pathParts[pathParts.length - 1] || "";
+                    // Infer folder-based category as a fallback; e.g. "Actor"
+                    const fileName = pathParts[pathParts.length - 1];
                     const fileBase = fileName.replace(/\.lua$/i, "");
 
                     let folderCategory = "misc";
@@ -350,7 +354,7 @@
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
 
-                        // ---- DOC COMMENTS ---------------------------------------------------
+                        // ---- DOC COMMENTS ---------------------------
                         if (line.startsWith("---")) {
                             const comment = line.substring(3).trim();
 
@@ -385,33 +389,81 @@
                                 description += (description ? " " : "") + comment;
                             }
 
-                            // ---- FUNCTION DECLARATIONS -----------------------------------------
-                        } else if (line.startsWith("function") || line.startsWith("local function")) {
-                            const funcMatch = line.match(/(?:local\s+)?function\s+(?:(\w+)[\.:])?(\w+)\s*\((.*?)\)/);
-                            if (funcMatch) {
-                                const [, classNameFromSig, funcName, params] = funcMatch;
+                            // ---- FUNCTION SIGNATURE --------------------
+                        } else if (line.startsWith("function")) {
+                            // Reset className from signature; e.g. "WebUI:Show()" or "WebUI.Show()"
+                            let classNameFromSig = null;
+                            let functionName = null;
+                            let params = "";
 
-                                // ✅ Grouping rule:
-                                // - Prefer @class for category (e.g. WebUI)
-                                // - Else use class name from signature
-                                // - Else fall back to folder-based category
-                                const logicalCategory = currentDocClass || classNameFromSig || folderCategory;
-
-                                const func = {
-                                    name: funcName,
-                                    category: logicalCategory, // used by sidebar & filters
-                                    folderCategory: folderCategory, // original path grouping if needed
-                                    apiSet: apiSet,
-                                    type: type,
-                                    description: description,
-                                    className: classNameFromSig || null, // unchanged – important for your key!
-                                    parameters: pendingParams.slice(),
-                                    returns: pendingReturn,
-                                    rawParams: params,
-                                };
-
-                                functions.push(func);
+                            // function WebUI.Show(param1, param2)
+                            let match = line.match(/^function\s+([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*\((.*)\)/);
+                            if (match) {
+                                classNameFromSig = match[1];
+                                functionName = match[2];
+                                params = match[3];
+                            } else {
+                                // function WebUI:Show(param1, param2)
+                                match = line.match(/^function\s+([A-Za-z_]\w*):([A-Za-z_]\w*)\s*\((.*)\)/);
+                                if (match) {
+                                    classNameFromSig = match[1];
+                                    functionName = match[2];
+                                    params = match[3];
+                                } else {
+                                    // function Show(param1, param2)
+                                    match = line.match(/^function\s+([A-Za-z_]\w*)\s*\((.*)\)/);
+                                    if (match) {
+                                        functionName = match[1];
+                                        params = match[2];
+                                    }
+                                }
                             }
+
+                            if (!functionName) {
+                                // Not a recognized function pattern; clear doc state and continue
+                                description = "";
+                                pendingParams = [];
+                                pendingReturn = { type: "void", description: "" };
+                                continue;
+                            }
+
+                            const paramList = params
+                                .split(",")
+                                .map((p) => p.trim())
+                                .filter((p) => p.length > 0);
+
+                            // If we have fewer @param entries than parameters in the signature, pad them with generic entries
+                            if (pendingParams.length < paramList.length) {
+                                for (let idx = pendingParams.length; idx < paramList.length; idx++) {
+                                    const paramName = paramList[idx];
+                                    pendingParams.push({
+                                        name: paramName,
+                                        type: "any",
+                                        modifier: null,
+                                        description: "",
+                                    });
+                                }
+                            }
+
+                            // Determine category:
+                            //  1) use currentDocClass if it was declared via @class
+                            //  2) else fall back to folderCategory
+                            const category = currentDocClass || folderCategory || "General";
+
+                            const func = {
+                                name: functionName,
+                                category: category,
+                                folderCategory: folderCategory,
+                                apiSet: apiSet,
+                                type: type,
+                                description: description,
+                                className: classNameFromSig || null,
+                                parameters: pendingParams.slice(),
+                                returns: pendingReturn,
+                                rawParams: params,
+                            };
+
+                            functions.push(func);
 
                             // Reset doc state after a function
                             description = "";
@@ -429,79 +481,26 @@
 
                     return functions;
                 }
-
-                generateSyntax(func) {
-                    const params = func.parameters
-                        .map((p) => {
-                            let paramStr = `${p.type} ${p.name}`;
-                            if (p.modifier === "opt") paramStr += " [optional]";
-                            if (p.modifier === "out") paramStr += " [out]";
-                            return paramStr;
-                        })
-                        .join(", ");
-
-                    // Handle both standalone functions and class methods
-                    const fullName = func.className ? `${func.className}.${func.name}` : func.name;
-                    return `${func.returns.type} ${fullName}(${params})`;
-                }
-
-                generateExample(func, lang = "lua") {
-                    if (lang === "lua") {
-                        const className = func.className || "";
-                        const callPrefix = className ? `${className}.` : "";
-                        const params = func.parameters
-                            .map((p) => {
-                                if (p.type === "string") return `"value"`;
-                                if (p.type === "boolean" || p.type === "bool") return "false";
-                                if (p.type === "number" || p.type === "integer" || p.type === "float") return "0";
-                                return "nil";
-                            })
-                            .join(", ");
-
-                        if (func.returns.type !== "void") {
-                            return `local result = ${callPrefix}${func.name}(${params})`;
-                        } else {
-                            return `${callPrefix}${func.name}(${params})`;
-                        }
-                    } else {
-                        // JS example (basic conversion)
-                        const params = func.parameters
-                            .map((p) => {
-                                if (p.type === "string") return `"value"`;
-                                if (p.type === "boolean" || p.type === "bool") return "false";
-                                if (p.type === "number" || p.type === "integer" || p.type === "float") return "0";
-                                return "null";
-                            })
-                            .join(", ");
-
-                        if (func.returns.type !== "void") {
-                            return `const result = ${func.name}(${params});`;
-                        } else {
-                            return `${func.name}(${params});`;
-                        }
-                    }
-                }
             }
 
-            // Main Application
+            // GitHub Configuration
+            const GITHUB_OWNER = "Joshua-Hypersonic";
+            const GITHUB_REPO = "helix-docs";
+            const GITHUB_BRANCH = "main";
+            const DOCS_PATH = "docs";
+
+            // State
             let allFunctions = [];
             let filteredFunctions = [];
-            let selectedFunction = null;
+            let classMap = {};
+            let selectedClassKey = null;
             let currentApiSet = "all";
             let currentCategory = "all";
-            let currentLanguage = "lua";
             let currentType = "all";
             const parser = new LuaDocParser();
 
-            // GitHub Configuration
-            const GITHUB_OWNER = "Joshua-Hypersonic"; // Change this
-            const GITHUB_REPO = "helix-docs"; // Change this
-            const GITHUB_BRANCH = "main"; // Change this
-            const DOCS_PATH = "docs"; // Base path where client/server folders are
-
             async function fetchGitHubDirectory(path) {
                 const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`;
-
                 try {
                     const response = await fetch(url);
                     if (!response.ok) {
@@ -517,7 +516,6 @@
 
             async function fetchGitHubFile(path) {
                 const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`;
-
                 try {
                     const response = await fetch(url);
                     if (!response.ok) {
@@ -537,12 +535,10 @@
 
                 for (const item of contents) {
                     const itemRelativePath = relativePath ? `${relativePath}/${item.name}` : item.name;
-
                     if (item.type === "file" && item.name.endsWith(".lua")) {
                         files.push({
                             path: item.path,
                             relativePath: itemRelativePath,
-                            downloadUrl: item.download_url,
                         });
                     } else if (item.type === "dir") {
                         const subFiles = await recursivelyFindLuaFiles(item.path, itemRelativePath);
@@ -553,26 +549,170 @@
                 return files;
             }
 
+            function applyFiltersAndRender() {
+                const searchTerm = document.getElementById("searchBar").value.toLowerCase();
+                const categoryFilter = document.getElementById("categoryFilter").value;
+                const apiSetFilter = document.getElementById("apiSetFilter").value;
+                const typeFilter = document.getElementById("typeFilter").value;
+
+                filteredFunctions = allFunctions.filter((func) => {
+                    const haystack = (func.name + " " + (func.description || "") + " " + (func.className || "") + " " + (func.category || "") + " " + (func.folderCategory || "")).toLowerCase();
+
+                    if (searchTerm && !haystack.includes(searchTerm)) return false;
+
+                    if (categoryFilter !== "all") {
+                        const cat = (func.category || func.folderCategory || "").toLowerCase();
+                        if (cat !== categoryFilter) return false;
+                    }
+
+                    if (apiSetFilter !== "all") {
+                        if (Array.isArray(func.apiSet)) {
+                            if (!func.apiSet.includes(apiSetFilter)) return false;
+                        } else if (func.apiSet !== apiSetFilter) {
+                            return false;
+                        }
+                    }
+
+                    if (typeFilter !== "all" && func.type !== typeFilter) return false;
+
+                    return true;
+                });
+
+                // Build class map from filtered functions
+                classMap = {};
+                for (const func of filteredFunctions) {
+                    const key = func.className || func.category || func.folderCategory || "Global";
+                    if (!classMap[key]) {
+                        classMap[key] = {
+                            key,
+                            name: key,
+                            functions: [],
+                        };
+                    }
+                    classMap[key].functions.push(func);
+                }
+
+                const classKeys = Object.keys(classMap).sort((a, b) => a.localeCompare(b));
+
+                if (!selectedClassKey || !classMap[selectedClassKey]) {
+                    selectedClassKey = classKeys[0] || null;
+                }
+
+                renderClassList(classKeys);
+                renderClassDetail(selectedClassKey);
+            }
+
+            function renderClassList(classKeys) {
+                const listContainer = document.getElementById("classList");
+                listContainer.innerHTML = "";
+
+                if (!classKeys.length) {
+                    listContainer.innerHTML = "<div class='loading'>No classes found</div>";
+                    const detailEl = document.getElementById("detailPanel");
+                    detailEl.innerHTML = "<div class='no-selection'><h2>No classes match the current filters</h2></div>";
+                    return;
+                }
+
+                for (const key of classKeys) {
+                    const group = classMap[key];
+                    const item = document.createElement("div");
+                    item.className = "function-item" + (key === selectedClassKey ? " active" : "");
+                    item.textContent = `${group.name} (${group.functions.length})`;
+
+                    item.addEventListener("click", () => {
+                        selectedClassKey = key;
+                        renderClassList(classKeys);
+                        renderClassDetail(key);
+                    });
+
+                    listContainer.appendChild(item);
+                }
+            }
+
+            function renderClassDetail(classKey) {
+                const detailEl = document.getElementById("detailPanel");
+                detailEl.innerHTML = "";
+
+                const group = classMap[classKey];
+                if (!group) {
+                    detailEl.innerHTML = "<div class='no-selection'><h2>Select a class to view its functions</h2></div>";
+                    return;
+                }
+
+                const functions = group.functions.slice().sort((a, b) => a.name.localeCompare(b.name));
+
+                let html = "<div class='detail-content'>";
+                html += `<h1>${group.name}</h1>`;
+                html += `<span class="category-badge">Functions: ${functions.length}</span>`;
+
+                functions.forEach((func) => {
+                    const apiSetBadge = (() => {
+                        if (Array.isArray(func.apiSet)) {
+                            const text = func.apiSet.join(" / ");
+                            return `<span class="api-set-badge">${text}</span>`;
+                        } else if (func.apiSet) {
+                            return `<span class="api-set-badge ${func.apiSet}">${func.apiSet}</span>`;
+                        } else {
+                            return `<span class="api-set-badge unknown">unknown</span>`;
+                        }
+                    })();
+
+                    const paramsHTML =
+                        func.parameters && func.parameters.length > 0
+                            ? func.parameters
+                                  .map((p) => {
+                                      let modifierBadge = "";
+                                      if (p.modifier === "opt") modifierBadge = '<span class="param-modifier">[optional]</span>';
+                                      if (p.modifier === "out") modifierBadge = '<span class="param-modifier">[output]</span>';
+
+                                      return `<li><span class="param-name">${p.name}</span> <span class="param-type">${p.type}</span> ${modifierBadge}${p.description ? " - " + p.description : ""}</li>`;
+                                  })
+                                  .join("")
+                            : "<li>No parameters</li>";
+
+                    const returns = func.returns || { type: "void", description: "" };
+                    const returnsHTML = `<p><span class="param-type">${returns.type}</span>${returns.description ? " - " + returns.description : ""}</p>`;
+
+                    html += `
+                        <h2>${func.name}</h2>
+                        ${apiSetBadge}
+                        <p>${func.description || "No description available."}</p>
+                        <h2>Parameters</h2>
+                        <ul class="param-list">${paramsHTML}</ul>
+                        <h2>Returns</h2>
+                        ${returnsHTML}
+                    `;
+                });
+
+                html += "</div>";
+                detailEl.innerHTML = html;
+            }
+
+            function populateCategoryFilter() {
+                const categories = [...new Set(allFunctions.map((f) => f.category).filter(Boolean))].sort();
+                const categoryFilter = document.getElementById("categoryFilter");
+
+                categoryFilter.innerHTML = '<option value="all">All</option>';
+
+                categories.forEach((category) => {
+                    const option = document.createElement("option");
+                    option.value = category.toLowerCase();
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                });
+            }
+
             async function loadFunctions() {
-                const listEl = document.getElementById("functionList");
-                listEl.innerHTML = '<div class="loading">Loading functions from GitHub...</div>';
+                const listEl = document.getElementById("classList");
+                listEl.innerHTML = '<div class="loading">Loading classes from GitHub...</div>';
 
                 try {
-                    // Find all .lua files in client and server directories
                     const clientFiles = await recursivelyFindLuaFiles(`${DOCS_PATH}/client`, "client");
                     const serverFiles = await recursivelyFindLuaFiles(`${DOCS_PATH}/server`, "server");
                     const allFiles = [...clientFiles, ...serverFiles];
 
-                    if (allFiles.length === 0) {
-                        listEl.innerHTML = '<div class="loading">No Lua files found in repository</div>';
-                        return;
-                    }
-
-                    listEl.innerHTML = `<div class="loading">Loading ${allFiles.length} functions...</div>`;
-
                     const functionMap = new Map();
 
-                    // Fetch and parse each file
                     for (const file of allFiles) {
                         const content = await fetchGitHubFile(file.path);
                         if (!content) continue;
@@ -583,7 +723,6 @@
                             const key = func.className ? `${func.className}.${func.name}` : func.name;
 
                             if (functionMap.has(key)) {
-                                // Merge apiSets if same function exists in both client/server
                                 const existing = functionMap.get(key);
                                 if (!Array.isArray(existing.apiSet)) {
                                     existing.apiSet = [existing.apiSet];
@@ -601,157 +740,31 @@
                     filteredFunctions = [...allFunctions];
 
                     populateCategoryFilter();
-                    renderFunctionList();
+                    applyFiltersAndRender();
                 } catch (error) {
                     console.error("Error loading functions:", error);
-                    listEl.innerHTML = '<div class="loading">Error loading functions. Check console for details.</div>';
+                    listEl.innerHTML = '<div class="loading">Error loading classes. Check console for details.</div>';
                 }
             }
 
-            function populateCategoryFilter() {
-                const categories = [...new Set(allFunctions.map((f) => f.category))].sort();
-                const categoryFilter = document.getElementById("categoryFilter");
-
-                // Clear existing options except "All"
-                categoryFilter.innerHTML = '<option value="all">All</option>';
-
-                categories.forEach((category) => {
-                    const option = document.createElement("option");
-                    option.value = category.toLowerCase();
-                    option.textContent = category;
-                    categoryFilter.appendChild(option);
-                });
-            }
-
-            function renderFunctionList() {
-                const listEl = document.getElementById("functionList");
-                listEl.innerHTML = "";
-
-                if (filteredFunctions.length === 0) {
-                    listEl.innerHTML = '<div class="loading">No functions found</div>';
-                    return;
-                }
-
-                // Optional: group a bit nicer
-                filteredFunctions.sort((a, b) => {
-                    const ca = (a.className || a.category || "").localeCompare(a.className || a.category || "");
-                    if (ca !== 0) return ca;
-                    return a.name.localeCompare(b.name);
-                });
-
-                filteredFunctions.forEach((func) => {
-                    const item = document.createElement("div");
-                    item.className = "function-item";
-                    if (selectedFunction === func) item.classList.add("active");
-
-                    const badges = Array.isArray(func.apiSet) ? func.apiSet.map((set) => `<span class="api-set-badge ${set}">${set}</span>`).join(" ") : `<span class="api-set-badge ${func.apiSet}">${func.apiSet}</span>`;
-
-                    const displayName = func.className ? `${func.className}.${func.name}` : func.name;
-
-                    item.innerHTML = `
-            <div class="function-name">${displayName} ${badges}</div>
-            <div class="function-category">
-                ${func.category}
-                ${func.type ? ` · <span class="function-type">${func.type}</span>` : ""}
-            </div>
-        `;
-
-                    item.addEventListener("click", () => {
-                        selectedFunction = func;
-                        renderFunctionList();
-                        renderDetail(func);
-                    });
-
-                    listEl.appendChild(item);
-                });
-            }
-
-            function renderDetail(func) {
-                const detailEl = document.getElementById("detailPanel");
-
-                const paramsHTML =
-                    func.parameters.length > 0
-                        ? func.parameters
-                              .map((p) => {
-                                  let modifierBadge = "";
-                                  if (p.modifier === "opt") modifierBadge = '<span class="param-modifier">[optional]</span>';
-                                  if (p.modifier === "out") modifierBadge = '<span class="param-modifier">[output]</span>';
-
-                                  return `<li><span class="param-name">${p.name}</span> <span class="param-type">(${p.type})</span>${modifierBadge}${p.description ? " - " + p.description : ""}</li>`;
-                              })
-                              .join("")
-                        : "<li>No parameters</li>";
-
-                const apiSetBadge = Array.isArray(func.apiSet) ? func.apiSet.map((set) => `<span class="api-set-badge ${set}">${set}</span>`).join(" ") : `<span class="api-set-badge ${func.apiSet}">${func.apiSet}</span>`;
-
-                const syntax = parser.generateSyntax(func);
-                const example = parser.generateExample(func, currentLanguage);
-
-                detailEl.innerHTML = `
-                    <div class="detail-content">
-                        <h1>${func.name}</h1>
-                        <span class="category-badge">${func.category}</span>
-                        ${apiSetBadge}
-
-                        <p>${func.description || "No description available."}</p>
-
-                        <h2>Syntax</h2>
-                        <div class="code-block"><code>${syntax}</code></div>
-
-                        <h2>Parameters</h2>
-                        <ul class="param-list">${paramsHTML}</ul>
-
-                        <h2>Returns</h2>
-                        <p><span class="param-type">${func.returns.type}</span>${func.returns.description ? " - " + func.returns.description : ""}</p>
-
-                        <h2>Example (${currentLanguage.toUpperCase()})</h2>
-                        <div class="code-block"><code>${example}</code></div>
-                    </div>
-                `;
-            }
-
-            document.getElementById("searchBar").addEventListener("input", (e) => {
-                const query = e.target.value.toLowerCase();
-                filterFunctions(query, currentCategory, currentApiSet, currentType);
+            document.getElementById("searchBar").addEventListener("input", () => {
+                applyFiltersAndRender();
             });
 
             document.getElementById("categoryFilter").addEventListener("change", (e) => {
                 currentCategory = e.target.value;
-                const query = document.getElementById("searchBar").value.toLowerCase();
-                filterFunctions(query, currentCategory, currentApiSet, currentType);
+                applyFiltersAndRender();
             });
 
             document.getElementById("apiSetFilter").addEventListener("change", (e) => {
                 currentApiSet = e.target.value;
-                const query = document.getElementById("searchBar").value.toLowerCase();
-                filterFunctions(query, currentCategory, currentApiSet, currentType);
+                applyFiltersAndRender();
             });
 
             document.getElementById("typeFilter").addEventListener("change", (e) => {
                 currentType = e.target.value;
-                const query = document.getElementById("searchBar").value.toLowerCase();
-                filterFunctions(query, currentCategory, currentApiSet, currentType);
+                applyFiltersAndRender();
             });
-
-            document.getElementById("languageFilter").addEventListener("change", (e) => {
-                currentLanguage = e.target.value;
-                if (selectedFunction) {
-                    renderDetail(selectedFunction);
-                }
-            });
-
-            function filterFunctions(query, category, apiSet, type) {
-                filteredFunctions = allFunctions.filter((func) => {
-                    const matchesSearch = func.name.toLowerCase().includes(query) || func.category.toLowerCase().includes(query) || (func.description && func.description.toLowerCase().includes(query));
-
-                    const matchesCategory = category === "all" || func.category.toLowerCase() === category;
-                    const matchesApiSet = apiSet === "all" || (Array.isArray(func.apiSet) ? func.apiSet.includes(apiSet) : func.apiSet === apiSet);
-                    const matchesType = type === "all" || func.type === type;
-
-                    return matchesSearch && matchesCategory && matchesApiSet && matchesType;
-                });
-                renderFunctionList();
-            }
 
             // Initialize
             loadFunctions();
