@@ -291,6 +291,36 @@
                 color: #9ca3af;
             }
 
+            .code-block-wrapper {
+                border: 1px solid #333;
+                border-radius: 6px;
+                background: #0f0f0f;
+                margin-top: 0.5rem;
+                overflow: hidden;
+            }
+
+            .code-label {
+                background: #1f1f1f;
+                color: #9ca3af;
+                font-size: 0.75rem;
+                padding: 2px 8px;
+                border-bottom: 1px solid #333;
+                font-family: monospace;
+            }
+
+            .code-block-wrapper pre {
+                background: transparent;
+                margin: 0;
+                padding: 0.75rem 1rem;
+            }
+
+            .code-block-wrapper code {
+                font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+                font-size: 0.9rem;
+                color: #c0d6f5;
+                white-space: pre;
+            }
+
             .no-selection h2 {
                 font-weight: 400;
             }
@@ -903,17 +933,26 @@
                     returnsList.appendChild(li);
                     card.appendChild(returnsList);
 
-                    // Example (Lua)
                     const exampleTitle = document.createElement("h3");
                     exampleTitle.className = "section-title";
                     exampleTitle.textContent = "Example";
                     card.appendChild(exampleTitle);
 
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "code-block-wrapper";
+
+                    const label = document.createElement("div");
+                    label.className = "code-label";
+                    label.textContent = "Lua";
+                    wrapper.appendChild(label);
+
                     const pre = document.createElement("pre");
                     const code = document.createElement("code");
                     code.textContent = generateLuaExample(func);
                     pre.appendChild(code);
-                    card.appendChild(pre);
+                    wrapper.appendChild(pre);
+
+                    card.appendChild(wrapper);
 
                     funcsContainer.appendChild(card);
                 });
