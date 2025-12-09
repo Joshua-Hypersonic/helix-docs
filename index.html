@@ -561,9 +561,13 @@
                     return "false";
                 }
 
-                if (t === "function") return "function()";
+                if (t === "function") {
+                    return "function()";
+                }
 
-                if (t === "...") return "params";
+                if (t === "...") {
+                    return "params";
+                }
 
                 // vectors / rotators / colors (UE-ish)
                 if (t === "FVector2D" || t === "Vector2D") {
