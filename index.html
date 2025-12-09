@@ -1034,8 +1034,30 @@
                 }
             }
 
+            function setUrlState({ classKey, functionName }) {
+                const params = new URLSearchParams(window.location.search);
+
+                if (classKey) {
+                    params.set("class", classKey); // e.g. AActor
+                } else {
+                    params.delete("class");
+                }
+
+                if (functionName) {
+                    params.set("fn", functionName); // e.g. SpawnActor
+                } else {
+                    params.delete("fn");
+                }
+
+                const newQuery = params.toString();
+                const newUrl = newQuery ? `${location.pathname}?${newQuery}` : location.pathname;
+
+                history.replaceState({}, "", newUrl);
+            }
+
             function renderClassDetail(classKey) {
                 const detailEl = document.getElementById("detailPanel");
+                detailEl.scrollTop = 0;
                 detailEl.innerHTML = "";
 
                 const group = classMap[classKey];
@@ -1043,6 +1065,8 @@
                     detailEl.innerHTML = '<div class="no-selection"><h2>Select a class to view its functions</h2></div>';
                     return;
                 }
+
+                setUrlState({ classKey, functionName: null });
 
                 const functions = group.functions.slice().sort((a, b) => a.name.localeCompare(b.name));
 
@@ -1230,6 +1254,16 @@
                     label.appendChild(labelText);
                     label.appendChild(copyButton);
                     codeWrapper.appendChild(label);
+
+                    card.addEventListener("click", () => {
+                        // If you have the classKey in scope, pass it; otherwise, use group.name or func.className
+                        setUrlState({ classKey: group.name, functionName: func.name });
+
+                        // Optionally scroll into view or expand details, depending on your UI
+                        card.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+
+                    wrapper.appendChild(card);
 
                     // Code body
                     const pre = document.createElement("pre");
