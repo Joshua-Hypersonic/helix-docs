@@ -1133,10 +1133,17 @@
                     header.appendChild(badges);
                     card.appendChild(header);
 
-                    const desc = document.createElement("p");
-                    desc.className = "function-description";
-                    desc.textContent = func.description || "No description available.";
-                    card.appendChild(desc);
+                    if (func.description) {
+                        const descTitle = document.createElement("div");
+                        descTitle.className = "section-title";
+                        descTitle.textContent = "Description";
+                        card.appendChild(descTitle);
+
+                        const desc = document.createElement("p");
+                        desc.className = "function-description";
+                        desc.textContent = func.description;
+                        card.appendChild(desc);
+                    }
 
                     // Parameters
                     const paramsTitle = document.createElement("h3");
