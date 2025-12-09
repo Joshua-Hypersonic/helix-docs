@@ -569,30 +569,28 @@
                     return "params";
                 }
 
-                // vectors / rotators / colors (UE-ish)
-                if (t === "FVector2D" || t === "Vector2D") {
+                if (t === "fvector2d" || t === "vector2d") {
                     return "Vector2D(0, 0)";
                 }
-                if (t === "FVector" || t === "Vector") {
+                if (t === "fvector" || t === "vector") {
                     return "Vector(0, 0, 0)";
                 }
-                if (t === "FRotator" || t === "Rotator") {
+                if (t === "frotator" || t === "rotator") {
                     return "Rotator(0, 0, 0)";
                 }
-                if (t === "FTransform" || t === "Transform") {
+                if (t === "ftransform" || t === "transform") {
                     return "Transform(Rotator():ToQuat(), Vector(), Vector())";
                 }
-                if (t === "FColor" || t === "Color") {
-                    // adjust if you prefer Color(255,255,255)
+                if (t === "fcolor" || t === "color") {
                     return "Color(1, 1, 1, 1)";
                 }
-                if (t === "FLinearColor" || t === "LinearColor") {
-                    // adjust if you prefer Color(255,255,255)
+                if (t === "flinearcolor" || t === "linearcolor") {
                     return "LinearColor(1, 1, 1, 1)";
                 }
-                if (t === "FQuat" || t === "Quat") {
+                if (t === "fquat" || t === "quat") {
                     return "Quat(0, 0, 0, 0)";
                 }
+
                 // containers
                 if (t.startsWith("tarray<") || t.startsWith("tset<") || t.startsWith("tmap<") || t === "table") {
                     return "{}";
@@ -604,7 +602,7 @@
                 }
 
                 // UObject / AActor / UActorComponent / etc → nil is safe
-                if (t.startsWith("u") || t.startsWith("a")) {
+                if (/^u[a-z0-9_]/.test(t) || /^a[a-z0-9_]/.test(t)) {
                     return "nil";
                 }
 
