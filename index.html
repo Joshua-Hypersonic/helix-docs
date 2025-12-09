@@ -484,12 +484,104 @@
                 background: rgba(255, 255, 255, 0.04);
                 color: #52525b;
                 font-size: 0.7rem;
-                padding: 0.5rem 1rem;
+                padding: 0.5rem 0.8rem 0.5rem 1rem;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.06);
                 font-family: "JetBrains Mono", monospace;
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.75rem;
+            }
+
+            .code-copy-button {
+                border: none;
+                outline: none;
+                cursor: pointer;
+                font-size: 0.7rem;
+                font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                padding: 0.2rem 0.6rem;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.04);
+                color: #a1a1aa;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.25rem;
+                transition: all 0.15s ease;
+            }
+
+            .code-copy-button:hover {
+                background: rgba(59, 130, 246, 0.16);
+                color: #bfdbfe;
+            }
+
+            .code-copy-button:active {
+                transform: translateY(1px);
+            }
+
+            /* Copied state */
+            .code-copy-button.copied {
+                background: rgba(34, 197, 94, 0.16);
+                color: #bbf7d0;
+            }
+
+            .hljs {
+                background: transparent !important;
+                color: #e4e4e7; /* base text */
+            }
+
+            /* Keywords: function, local, end, return, if, then */
+            .hljs-keyword,
+            .hljs-literal,
+            .hljs-built_in {
+                color: #c084fc; /* IDE purple */
+                font-weight: 500;
+            }
+
+            /* Function calls + function definitions */
+            .hljs-title.function,
+            .hljs-title {
+                color: #60a5fa; /* IDE blue */
+                font-weight: 500;
+            }
+
+            /* Function parameters (if detected) */
+            .hljs-params {
+                color: #e4e4e7;
+            }
+
+            /* Strings "Hello" */
+            .hljs-string {
+                color: #67e8f9; /* cyan/teal */
+            }
+
+            /* Numbers 0, 1, 100 */
+            .hljs-number {
+                color: #facc15; /* soft gold */
+            }
+
+            /* Comments */
+            .hljs-comment {
+                color: #575757;
+                font-style: italic;
+            }
+
+            /* UE types / structs: Vector, Rotator, etc */
+            .hljs-type {
+                color: #2dd4bf; /* teal */
+                font-weight: 500;
+            }
+
+            /* Operators: + - = .. == */
+            .hljs-operator {
+                color: #a1a1aa;
+            }
+
+            /* Punctuation: (), {}, commas */
+            .hljs-punctuation {
+                color: #71717a;
             }
 
             .code-block-wrapper pre {
@@ -681,6 +773,48 @@
                         hljs.highlightElement(el);
                     });
                 }
+            }
+
+            function copyTextToClipboard(text, buttonEl) {
+                const showCopied = () => {
+                    if (!buttonEl) return;
+                    const original = buttonEl.textContent;
+                    buttonEl.textContent = "Copied";
+                    buttonEl.classList.add("copied");
+                    setTimeout(() => {
+                        buttonEl.textContent = original;
+                        buttonEl.classList.remove("copied");
+                    }, 1500);
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard
+                        .writeText(text)
+                        .then(showCopied)
+                        .catch(() => {
+                            fallbackCopyText(text);
+                            showCopied();
+                        });
+                } else {
+                    fallbackCopyText(text);
+                    showCopied();
+                }
+            }
+
+            function fallbackCopyText(text) {
+                const textarea = document.createElement("textarea");
+                textarea.value = text;
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+                textarea.style.left = "-9999px";
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand("copy");
+                } catch (e) {
+                    console.warn("Copy failed", e);
+                }
+                document.body.removeChild(textarea);
             }
 
             function generateLuaExample(func) {
@@ -1009,11 +1143,34 @@
                     const codeWrapper = document.createElement("div");
                     codeWrapper.className = "code-block-wrapper";
 
+                    // Header (label + copy button)
                     const label = document.createElement("div");
                     label.className = "code-label";
-                    label.textContent = "Lua";
+
+                    const labelText = document.createElement("span");
+                    labelText.textContent = "Lua";
+
+                    const copyButton = document.createElement("button");
+                    copyButton.className = "code-copy-button";
+                    copyButton.type = "button";
+                    copyButton.textContent = "Copy";
+
+                    // attach click handler
+                    copyButton.addEventListener("click", () => {
+                        const codeEl = codeWrapper.querySelector("pre code");
+                        if (!codeEl) return;
+
+                        const text = codeEl.innerText || codeEl.textContent || "";
+                        if (!text) return;
+
+                        copyTextToClipboard(text, copyButton);
+                    });
+
+                    label.appendChild(labelText);
+                    label.appendChild(copyButton);
                     codeWrapper.appendChild(label);
 
+                    // Code body
                     const pre = document.createElement("pre");
                     const code = document.createElement("code");
                     code.className = "language-lua";
