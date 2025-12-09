@@ -364,25 +364,67 @@
                 border-radius: 4px;
             }
 
+            /* ===== PROPERTIES ===== */
             .property-list {
                 list-style: none;
-                padding-left: 0;
-                margin: 0 0 1.5rem 0;
+                margin: 0.75rem 0 1.5rem;
+                padding: 0;
+                border-radius: 12px;
+                background: #0d1117; /* same as param-list items */
+                border: 1px solid #30363d;
+                overflow: hidden;
             }
 
             .property-list li {
-                margin-bottom: 0.25rem;
-                font-size: 0.9rem;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                grid-template-rows: auto auto;
+                grid-template-areas:
+                    "name type"
+                    "description description";
+                gap: 0.15rem 0.75rem;
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid #30363d;
+                font-size: 0.85rem;
+                line-height: 1.4;
             }
 
+            .property-list li:last-child {
+                border-bottom: none;
+            }
+
+            /* Property name */
             .property-name {
-                font-family: "Tomorrow", sans-serif;
-                margin-right: 0.5rem;
+                grid-area: name;
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: #e4e4e7; /* same as body text */
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-family: "JetBrains Mono", monospace;
             }
 
+            /* Type "pill" */
             .property-type {
-                font-family: "Tomorrow", sans-serif;
-                opacity: 0.8;
+                grid-area: type;
+                justify-self: end;
+                align-self: center;
+                font-size: 0.75rem;
+                font-family: "JetBrains Mono", monospace;
+                padding: 0.15rem 0.55rem;
+                border-radius: 999px;
+                border: 1px solid rgba(59, 130, 246, 0.6); /* blue outline */
+                background: rgba(37, 99, 235, 0.14); /* subtle blue fill */
+                color: #bfdbfe; /* light blue text */
+                text-transform: none;
+            }
+
+            /* Description */
+            .property-description {
+                grid-area: description;
+                font-size: 0.8rem;
+                color: #a1a1aa; /* same tone as .function-description */
             }
 
             .dim {
@@ -834,10 +876,10 @@
                     group.properties.forEach((prop) => {
                         const li = document.createElement("li");
                         li.innerHTML = `
-            <span class="property-name">${prop.name}</span>
-            <span class="property-type">${prop.type}</span>
-            ${prop.description ? " - " + prop.description : ""}
-        `;
+        <span class="property-name">${prop.name}</span>
+        <span class="property-type">${prop.type}</span>
+        ${prop.description ? `<span class="property-description">${prop.description}</span>` : ""}
+    `;
                         propList.appendChild(li);
                     });
 
