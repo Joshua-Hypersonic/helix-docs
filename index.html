@@ -4,6 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Native Functions Documentation</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Tomorrow:wght@300;400;500;600;700&display=swap");
             @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
@@ -556,13 +558,13 @@
                     </select>
                 </div>
                 <!-- Keeping Language filter for visual consistency; it no longer changes anything -->
-                <div class="filter-group">
+                <!-- <div class="filter-group">
                     <label>Language:</label>
                     <select id="languageFilter" class="filter-select">
                         <option value="lua">Lua</option>
                         <option value="js">JS</option>
                     </select>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -667,6 +669,14 @@
                 }
 
                 return sampleValueForType(p.type, p.name);
+            }
+
+            function highlightCodeBlocks(root) {
+                if (window.hljs && root) {
+                    root.querySelectorAll("pre code").forEach((el) => {
+                        hljs.highlightElement(el);
+                    });
+                }
             }
 
             function generateLuaExample(func) {
@@ -1002,6 +1012,7 @@
 
                     const pre = document.createElement("pre");
                     const code = document.createElement("code");
+                    code.className = "language-lua";
                     code.textContent = generateLuaExample(func);
                     pre.appendChild(code);
                     codeWrapper.appendChild(pre);
@@ -1013,6 +1024,8 @@
 
                 wrapper.appendChild(funcsContainer);
                 detailEl.appendChild(wrapper);
+
+                highlightCodeBlocks(wrapper);
             }
 
             // ---------- Data load from pre-generated JSON ----------
@@ -1060,9 +1073,9 @@
             });
 
             // Language filter kept for UI; no behavior now
-            document.getElementById("languageFilter").addEventListener("change", () => {
-                // Intentionally does nothing; syntax/examples removed
-            });
+            // document.getElementById("languageFilter").addEventListener("change", () => {
+            //     // Intentionally does nothing; syntax/examples removed
+            // });
 
             // Initialize
             loadFunctions();
