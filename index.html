@@ -364,6 +364,27 @@
                 border-radius: 4px;
             }
 
+            .property-list {
+                list-style: none;
+                padding-left: 0;
+                margin: 0 0 1.5rem 0;
+            }
+
+            .property-list li {
+                margin-bottom: 0.25rem;
+                font-size: 0.9rem;
+            }
+
+            .property-name {
+                font-family: "Tomorrow", sans-serif;
+                margin-right: 0.5rem;
+            }
+
+            .property-type {
+                font-family: "Tomorrow", sans-serif;
+                opacity: 0.8;
+            }
+
             .dim {
                 color: #52525b;
                 font-size: 0.85rem;
@@ -531,7 +552,7 @@
                 }
 
                 // numbers
-                if (t === "number" || t === "float" || t === "double" || t === "int" || t === "int32" || t === "int64") {
+                if (t === "number" || t === "float" || t === "double" || t === "int" || t === "integer" || t === "int32" || t === "int64") {
                     return "0";
                 }
 
@@ -540,18 +561,34 @@
                     return "false";
                 }
 
+                if (t === "function") return "function()";
+
+                if (t === "...") return "params";
+
                 // vectors / rotators / colors (UE-ish)
-                if (t.includes("vector")) {
+                if (t === "FVector2D" || t === "Vector2D") {
+                    return "Vector2D(0, 0)";
+                }
+                if (t === "FVector" || t === "Vector") {
                     return "Vector(0, 0, 0)";
                 }
-                if (t.includes("rotator")) {
+                if (t === "FRotator" || t === "Rotator") {
                     return "Rotator(0, 0, 0)";
                 }
-                if (t.includes("color")) {
+                if (t === "FTransform" || t === "Transform") {
+                    return "Transform(Rotator():ToQuat(), Vector(), Vector())";
+                }
+                if (t === "FColor" || t === "Color") {
                     // adjust if you prefer Color(255,255,255)
                     return "Color(1, 1, 1, 1)";
                 }
-
+                if (t === "FLinearColor" || t === "LinearColor") {
+                    // adjust if you prefer Color(255,255,255)
+                    return "LinearColor(1, 1, 1, 1)";
+                }
+                if (t === "FQuat" || t === "Quat") {
+                    return "Quat(0, 0, 0, 0)";
+                }
                 // containers
                 if (t.startsWith("tarray<") || t.startsWith("tset<") || t.startsWith("tmap<") || t === "table") {
                     return "{}";
@@ -706,8 +743,15 @@
                             key,
                             name: key,
                             functions: [],
+                            properties: [],
                         };
                     }
+
+                    // pick up properties once per class (from any function)
+                    if (func.properties && func.properties.length > 0 && classMap[key].properties.length === 0) {
+                        classMap[key].properties = func.properties;
+                    }
+
                     classMap[key].functions.push(func);
                 }
 
@@ -775,6 +819,28 @@
                 badge.className = "category-badge";
                 badge.textContent = `Functions: ${functions.length}`;
                 wrapper.appendChild(badge);
+
+                if (group.properties && group.properties.length > 0) {
+                    const propTitle = document.createElement("h3");
+                    propTitle.className = "section-title";
+                    propTitle.textContent = "Properties";
+                    wrapper.appendChild(propTitle);
+
+                    const propList = document.createElement("ul");
+                    propList.className = "property-list";
+
+                    group.properties.forEach((prop) => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `
+            <span class="property-name">${prop.name}</span>
+            <span class="property-type">${prop.type}</span>
+            ${prop.description ? " - " + prop.description : ""}
+        `;
+                        propList.appendChild(li);
+                    });
+
+                    wrapper.appendChild(propList);
+                }
 
                 const funcsContainer = document.createElement("div");
                 funcsContainer.className = "class-functions";

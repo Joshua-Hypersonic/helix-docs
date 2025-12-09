@@ -14,6 +14,7 @@ class LuaDocParser {
         let pendingParams = [];
         let pendingReturn = { type: "void", description: "" };
         let currentDocClass = null;
+        const classFields = {};
 
         const pathParts = filePath.split("/");
 
@@ -55,6 +56,22 @@ class LuaDocParser {
                     const classMatch = comment.match(/@class\s+(\w+)/);
                     if (classMatch) {
                         currentDocClass = classMatch[1];
+                        if (!classFields[currentDocClass]) {
+                            classFields[currentDocClass] = [];
+                        }
+                    }
+                    continue;
+                }
+
+                if (comment.startsWith("@field") && currentDocClass) {
+                    const fieldMatch = comment.match(/@field\s+(?:private|public|protected)?\s*(\w+)\s+(\S+)\s*(?:@(.*))?/);
+                    if (fieldMatch) {
+                        const [, name, typeName, desc] = fieldMatch;
+                        classFields[currentDocClass].push({
+                            name,
+                            type: typeName,
+                            description: (desc || "").trim(),
+                        });
                     }
                     continue;
                 }
@@ -167,6 +184,7 @@ class LuaDocParser {
                     parameters: pendingParams.slice(),
                     returns: pendingReturn,
                     rawParams: params,
+                    properties: classFields[logicalCategory] || [], // <-- NEW
                 };
 
                 functions.push(func);
