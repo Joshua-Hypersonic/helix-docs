@@ -1,33 +1,6 @@
 ---Actor is the base class for an Object that can be placed or spawned in a level.
 ---Actors may contain a collection of ActorComponents, which can be used to control how actors move, how they are rendered, etc.
 ---The other main function of an Actor is the replication of properties and function calls across the network during play.
----Actor initialization has multiple steps, here's the order of important virtual functions that get called:
----- UObject::PostLoad: For actors statically placed in a level, the normal UObject PostLoad gets called both in the editor and during gameplay.
----                     This is not called for newly spawned actors.
----- UActorComponent::OnComponentCreated: When an actor is spawned in the editor or during gameplay, this gets called for any native components.
----                                       For blueprint-created components, this gets called during construction for that component.
----                                       This is not called for components loaded from a level.
----- AActor::PreRegisterAllComponents: For statically placed actors and spawned actors that have native root components, this gets called now.
----                                    For blueprint actors without a native root component, these registration functions get called later during construction.
----- UActorComponent::RegisterComponent: All components are registered in editor and at runtime, this creates their physical/visual representation.
----                                      These calls may be distributed over multiple frames, but are always after PreRegisterAllComponents.
----                                      This may also get called later on after an UnregisterComponent call removes it from the world.
----- AActor::PostRegisterAllComponents: Called for all actors both in the editor and in gameplay, this is the last function that is called in all cases.
----- AActor::PostActorCreated: When an actor is created in the editor or during gameplay, this gets called right before construction.
----                            This is not called for components loaded from a level.
----- AActor::UserConstructionScript: Called for blueprints that implement a construction script.
----- AActor::OnConstruction: Called at the end of ExecuteConstruction, which calls the blueprint construction script.
----                          This is called after all blueprint-created components are fully created and registered.
----                          This is only called during gameplay for spawned actors, and may get rerun in the editor when changing blueprints.
----- AActor::PreInitializeComponents: Called before InitializeComponent is called on the actor's components.
----                                   This is only called during gameplay and in certain editor preview windows.
----- UActorComponent::Activate: This will be called only if the component has bAutoActivate set.
----                             It will also got called later on if a component is manually activated.
----- UActorComponent::InitializeComponent: This will be called only if the component has bWantsInitializeComponentSet.
----                                        This only happens once per gameplay session.
----- AActor::PostInitializeComponents: Called after the actor's components have been initialized, only during gameplay and some editor previews.
----- AActor::BeginPlay: Called when the level starts ticking, only during actual gameplay.
----                     This normally happens right after PostInitializeComponents but can be delayed for networked or child actors.
 ---@class AActor : UObject
 ---@field public PrimaryActorTick FActorTickFunction @Primary Actor tick function, which calls TickActor(). Tick functions can be configured to control whether ticking is enabled, at what time during a frame the update occurs, and to set up tick dependencies.
 ---@field public bNetTemporary boolean @If true, when the actor is spawned it will be sent to the client but receive no further replication updates from the server afterwards.
@@ -143,7 +116,7 @@ local AActor = {}
 
 ---Returns true if this actor has been rendered "recently", with a tolerance in seconds to define what "recent" means.
 ---e.g.: If a tolerance of 0.1 is used, this function will return true only if the actor was rendered in the last 0.1 seconds of game time.
----@param Tolerance number @[opt] 
+---@param Tolerance number @[opt]
 ---@return boolean
 function AActor:WasRecentlyRendered(Tolerance) end
 
@@ -233,7 +206,7 @@ function AActor:SetActorRelativeScale3D(NewRelativeScale) end
 
 ---Assigns a new label to this actor.  Actor labels are only available in development builds.
 ---@param NewActorLabel string
----@param bMarkDirty boolean @[opt] 
+---@param bMarkDirty boolean @[opt]
 function AActor:SetActorLabel(NewActorLabel, bMarkDirty) end
 
 ---Sets the actor to be hidden in the game
@@ -356,7 +329,7 @@ function AActor:ReceiveActorBeginCursorOver() end
 ---Calls PrestreamTextures() for all the actor's meshcomponents.
 ---@param Seconds number
 ---@param bEnableStreaming boolean
----@param CinematicTextureGroups integer @[opt] 
+---@param CinematicTextureGroups integer @[opt]
 function AActor:PrestreamTextures(Seconds, bEnableStreaming, CinematicTextureGroups) end
 
 ---Called on client when updated bReplicateMovement value is received for this actor.
@@ -377,11 +350,11 @@ function AActor:OnRep_AttachmentReplication() end
 ---Trigger a noise caused by a given Pawn, at a given location.
 ---Note that the NoiseInstigator Pawn MUST have a PawnNoiseEmitterComponent for the noise to be detected by a PawnSensingComponent.
 ---Senders of MakeNoise should have an Instigator if they are not pawns, or pass a NoiseInstigator.
----@param Loudness number @[opt] 
----@param NoiseInstigator APawn @[opt] 
+---@param Loudness number @[opt]
+---@param NoiseInstigator APawn @[opt]
 ---@param NoiseLocation FVector
----@param MaxRange number @[opt] 
----@param Tag string @[opt] 
+---@param MaxRange number @[opt]
+---@param Tag string @[opt]
 function AActor:MakeNoise(Loudness, NoiseInstigator, NoiseLocation, MaxRange, Tag) end
 
 ---Teleport this actor to a new location. If the actor doesn't fit exactly at the location specified, tries to slightly move it out of walls and such.
@@ -399,7 +372,7 @@ function AActor:K2_TeleportTo(DestLocation, DestRotation) end
 ---                         Setting the transform without teleporting will not update the transform of simulated child/attached components.
 ---@param NewTransform FTransform
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 ---@return boolean
 function AActor:K2_SetActorTransform(NewTransform, bSweep, SweepHitResult, bTeleport) end
@@ -423,7 +396,7 @@ function AActor:K2_SetActorRotation(NewRotation, bTeleportPhysics) end
 ---                         Setting the transform without teleporting will not update the transform of simulated child/attached components.
 ---@param NewRelativeTransform FTransform
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_SetActorRelativeTransform(NewRelativeTransform, bSweep, SweepHitResult, bTeleport) end
 
@@ -436,7 +409,7 @@ function AActor:K2_SetActorRelativeTransform(NewRelativeTransform, bSweep, Sweep
 ---                             Setting the rotation without teleporting will not update the rotation of simulated child/attached components.
 ---@param NewRelativeRotation FRotator
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_SetActorRelativeRotation(NewRelativeRotation, bSweep, SweepHitResult, bTeleport) end
 
@@ -449,7 +422,7 @@ function AActor:K2_SetActorRelativeRotation(NewRelativeRotation, bSweep, SweepHi
 ---                             Setting the location without teleporting will not update the location of simulated child/attached components.
 ---@param NewRelativeLocation FVector
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_SetActorRelativeLocation(NewRelativeLocation, bSweep, SweepHitResult, bTeleport) end
 
@@ -463,7 +436,7 @@ function AActor:K2_SetActorRelativeLocation(NewRelativeLocation, bSweep, SweepHi
 ---@param NewLocation FVector
 ---@param NewRotation FRotator
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 ---@return boolean
 function AActor:K2_SetActorLocationAndRotation(NewLocation, NewRotation, bSweep, SweepHitResult, bTeleport) end
@@ -477,7 +450,7 @@ function AActor:K2_SetActorLocationAndRotation(NewLocation, NewRotation, bSweep,
 ---                     Setting the location without teleporting will not update the location of simulated child/attached components.
 ---@param NewLocation FVector
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 ---@return boolean
 function AActor:K2_SetActorLocation(NewLocation, bSweep, SweepHitResult, bTeleport) end
@@ -513,9 +486,9 @@ function AActor:K2_GetActorRotation() end
 function AActor:K2_GetActorLocation() end
 
 ---Detaches the RootComponent of this Actor from any SceneComponent it is currently attached to.
----@param LocationRule EDetachmentRule @[opt] 
----@param RotationRule EDetachmentRule @[opt] 
----@param ScaleRule EDetachmentRule @[opt] 
+---@param LocationRule EDetachmentRule @[opt]
+---@param RotationRule EDetachmentRule @[opt]
+---@param ScaleRule EDetachmentRule @[opt]
 function AActor:K2_DetachFromActor(LocationRule, RotationRule, ScaleRule) end
 
 ---Destroy the actor
@@ -542,28 +515,28 @@ function AActor:K2_AttachToComponent(Parent, SocketName, LocationRule, RotationR
 function AActor:K2_AttachToActor(ParentActor, SocketName, LocationRule, RotationRule, ScaleRule, bWeldSimulatedBodies) end
 
 ---@param InParentActor AActor
----@param InSocketName string @[opt] 
----@param AttachLocationType integer @[opt] 
----@param bWeldSimulatedBodies boolean @[opt] 
+---@param InSocketName string @[opt]
+---@param AttachLocationType integer @[opt]
+---@param bWeldSimulatedBodies boolean @[opt]
 function AActor:K2_AttachRootComponentToActor(InParentActor, InSocketName, AttachLocationType, bWeldSimulatedBodies) end
 
 ---@param InParent USceneComponent
----@param InSocketName string @[opt] 
----@param AttachLocationType integer @[opt] 
----@param bWeldSimulatedBodies boolean @[opt] 
+---@param InSocketName string @[opt]
+---@param AttachLocationType integer @[opt]
+---@param bWeldSimulatedBodies boolean @[opt]
 function AActor:K2_AttachRootComponentTo(InParent, InSocketName, AttachLocationType, bWeldSimulatedBodies) end
 
 ---Adds a delta to the transform of this actor in world space. Scale is unchanged.
 ---@param DeltaTransform FTransform
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorWorldTransformKeepScale(DeltaTransform, bSweep, SweepHitResult, bTeleport) end
 
 ---Adds a delta to the transform of this actor in world space. Ignores scale and sets it to (1,1,1).
 ---@param DeltaTransform FTransform
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorWorldTransform(DeltaTransform, bSweep, SweepHitResult, bTeleport) end
 
@@ -575,7 +548,7 @@ function AActor:K2_AddActorWorldTransform(DeltaTransform, bSweep, SweepHitResult
 ---                         Setting the rotation without teleporting will not update the rotation of simulated child/attached components.
 ---@param DeltaRotation FRotator
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorWorldRotation(DeltaRotation, bSweep, SweepHitResult, bTeleport) end
 
@@ -588,7 +561,7 @@ function AActor:K2_AddActorWorldRotation(DeltaRotation, bSweep, SweepHitResult, 
 ---                         Setting the location without teleporting will not update the location of simulated child/attached components.
 ---@param DeltaLocation FVector
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorWorldOffset(DeltaLocation, bSweep, SweepHitResult, bTeleport) end
 
@@ -601,7 +574,7 @@ function AActor:K2_AddActorWorldOffset(DeltaLocation, bSweep, SweepHitResult, bT
 ---                         Setting the transform without teleporting will not update the transform of simulated child/attached components.
 ---@param NewTransform FTransform
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorLocalTransform(NewTransform, bSweep, SweepHitResult, bTeleport) end
 
@@ -614,7 +587,7 @@ function AActor:K2_AddActorLocalTransform(NewTransform, bSweep, SweepHitResult, 
 ---                         Setting the rotation without teleporting will not update the rotation of simulated child/attached components.
 ---@param DeltaRotation FRotator
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorLocalRotation(DeltaRotation, bSweep, SweepHitResult, bTeleport) end
 
@@ -627,12 +600,12 @@ function AActor:K2_AddActorLocalRotation(DeltaRotation, bSweep, SweepHitResult, 
 ---                         Setting the location without teleporting will not update the location of simulated child/attached components.
 ---@param DeltaLocation FVector
 ---@param bSweep boolean
----@param SweepHitResult FHitResult @[out] 
+---@param SweepHitResult FHitResult @[out]
 ---@param bTeleport boolean
 function AActor:K2_AddActorLocalOffset(DeltaLocation, bSweep, SweepHitResult, bTeleport) end
 
 ---Returns whether or not this actor was explicitly hidden in the editor for the duration of the current editor session
----@param bIncludeParent boolean @[opt] 
+---@param bIncludeParent boolean @[opt]
 ---@return boolean
 function AActor:IsTemporarilyHiddenInEditor(bIncludeParent) end
 
@@ -729,12 +702,12 @@ function AActor:GetParentActor() end
 function AActor:GetOwner() end
 
 ---Returns list of components this actor is overlapping.
----@param OverlappingComponents TArray_UPrimitiveComponent_ @[out] 
+---@param OverlappingComponents TArray_UPrimitiveComponent_ @[out]
 function AActor:GetOverlappingComponents(OverlappingComponents) end
 
 ---Returns list of actors this actor is overlapping (any component overlapping any component). Does not return itself.
----@param OverlappingActors TArray_AActor_ @[out] 
----@param ClassFilter TSubclassOf_AActor_ @[opt] 
+---@param OverlappingActors TArray_AActor_ @[out]
+---@param ClassFilter TSubclassOf_AActor_ @[opt]
 function AActor:GetOverlappingActors(OverlappingActors, ClassFilter) end
 
 ---Get the current frequency at which this object will be considered for replication.
@@ -845,15 +818,15 @@ function AActor:GetAttachParentSocketName() end
 function AActor:GetAttachParentActor() end
 
 ---Find all Actors which are attached directly to a component in this actor
----@param OutActors TArray_AActor_ @[out] 
----@param bResetArray boolean @[opt] 
----@param bRecursivelyIncludeAttachedActors boolean @[opt] 
+---@param OutActors TArray_AActor_ @[out]
+---@param bResetArray boolean @[opt]
+---@param bRecursivelyIncludeAttachedActors boolean @[opt]
 function AActor:GetAttachedActors(OutActors, bResetArray, bRecursivelyIncludeAttachedActors) end
 
 ---Returns a list of all actors spawned by our Child Actor Components, including children of children.
 ---This does not return the contents of the Children array
----@param ChildActors TArray_AActor_ @[out] 
----@param bIncludeDescendants boolean @[opt] 
+---@param ChildActors TArray_AActor_ @[out]
+---@param bIncludeDescendants boolean @[opt]
 function AActor:GetAllChildActors(ChildActors, bIncludeDescendants) end
 
 ---Get the up (Z) vector (length 1.0) from this Actor, in world space.
@@ -882,7 +855,7 @@ function AActor:GetActorRightVector() end
 function AActor:GetActorRelativeScale3D() end
 
 ---Returns this actor's current label.  Actor labels are only available in development builds.
----@param bCreateIfNone boolean @[opt] 
+---@param bCreateIfNone boolean @[opt]
 ---@return string
 function AActor:GetActorLabel(bCreateIfNone) end
 
@@ -895,8 +868,8 @@ function AActor:GetActorForwardVector() end
 ---For example, for a Pawn, this would define the eye height location,
 ---and view rotation (which is different from the pawn rotation which has a zeroed pitch component).
 ---A camera first person view will typically use this view point. Most traces (weapon, AI) will be done from this view point.
----@param OutLocation FVector @[out] 
----@param OutRotation FRotator @[out] 
+---@param OutLocation FVector @[out]
+---@param OutRotation FRotator @[out]
 function AActor:GetActorEyesViewPoint(OutLocation, OutRotation) end
 
 ---Get current state of collision for the whole actor
@@ -905,9 +878,9 @@ function AActor:GetActorEnableCollision() end
 
 ---Returns the bounding box of all components that make up this Actor (excluding ChildActorComponents).
 ---@param bOnlyCollidingComponents boolean
----@param Origin FVector @[out] 
----@param BoxExtent FVector @[out] 
----@param bIncludeFromChildActors boolean @[opt] 
+---@param Origin FVector @[out]
+---@param BoxExtent FVector @[out]
+---@param bIncludeFromChildActors boolean @[opt]
 function AActor:GetActorBounds(bOnlyCollidingComponents, Origin, BoxExtent, bIncludeFromChildActors) end
 
 ---Force actor to be updated to clients/demo net drivers
@@ -937,7 +910,7 @@ function AActor:EnableInput(PlayerController) end
 ---@param PlayerController APlayerController
 function AActor:DisableInput(PlayerController) end
 
----@param bMaintainWorldPosition boolean @[opt] 
+---@param bMaintainWorldPosition boolean @[opt]
 function AActor:DetachRootComponentFromParent(bMaintainWorldPosition) end
 
 ---Creates an input component from the input component passed in
@@ -979,7 +952,7 @@ function AActor:AddComponentByClass(Class, bManualAttachment, RelativeTransform,
 ---@param bManualAttachment boolean
 ---@param RelativeTransform FTransform
 ---@param ComponentTemplateContext UObject
----@param bDeferredFinish boolean @[opt] 
+---@param bDeferredFinish boolean @[opt]
 ---@return UActorComponent
 function AActor:AddComponent(TemplateName, bManualAttachment, RelativeTransform, ComponentTemplateContext, bDeferredFinish) end
 
@@ -987,4 +960,3 @@ function AActor:AddComponent(TemplateName, bManualAttachment, RelativeTransform,
 ---@param Tag string
 ---@return boolean
 function AActor:ActorHasTag(Tag) end
-

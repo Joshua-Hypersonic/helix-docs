@@ -76,6 +76,14 @@
                 margin: 0 auto 0 auto;
             }
 
+            .description-context {
+                font-size: 0.95rem;
+                color: #bbbbbb;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+                max-width: 720px;
+            }
+
             /* ===== BRAND LOGO (Minimal) ===== */
             .brand-logo {
                 display: flex;
@@ -1045,11 +1053,19 @@
                 title.textContent = group.name;
                 wrapper.appendChild(title);
 
-                const badge = document.createElement("span");
-                badge.className = "category-badge";
-                badge.textContent = `Functions: ${functions.length}`;
-                wrapper.appendChild(badge);
+                let classDescription = group.classDescription || (functions[0] && functions[0].classDescription) || "";
 
+                if (classDescription) {
+                    const sectionTitle = document.createElement("div");
+                    sectionTitle.className = "section-title";
+                    sectionTitle.textContent = "Description";
+                    wrapper.appendChild(sectionTitle);
+
+                    const desc = document.createElement("p");
+                    desc.className = "description-context";
+                    desc.textContent = classDescription;
+                    wrapper.appendChild(desc);
+                }
                 if (group.properties && group.properties.length > 0) {
                     const propTitle = document.createElement("h3");
                     propTitle.className = "section-title";

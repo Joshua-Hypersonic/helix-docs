@@ -15,6 +15,7 @@ class LuaDocParser {
         let pendingReturn = { type: "void", description: "" };
         let currentDocClass = null;
         const classFields = {};
+        const classDescriptions = {};
 
         const pathParts = filePath.split("/");
 
@@ -56,9 +57,18 @@ class LuaDocParser {
                     const classMatch = comment.match(/@class\s+(\w+)/);
                     if (classMatch) {
                         currentDocClass = classMatch[1];
+
                         if (!classFields[currentDocClass]) {
                             classFields[currentDocClass] = [];
                         }
+
+                        // Store description accumulated so far as the CLASS description
+                        if (description && !classDescriptions[currentDocClass]) {
+                            classDescriptions[currentDocClass] = description.trim();
+                        }
+
+                        // Reset description so the next function does not inherit class description
+                        description = "";
                     }
                     continue;
                 }
@@ -179,6 +189,7 @@ class LuaDocParser {
                     apiSet,
                     type,
                     description,
+                    classDescription: classDescriptions[currentDocClass] || "",
                     className: classNameFromSig || null,
                     callStyle,
                     parameters: pendingParams.slice(),
