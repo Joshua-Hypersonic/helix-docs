@@ -516,194 +516,7 @@
                 </div>
             </div>
         </div>
-
         <script>
-            // LuaDoc Parser
-            class LuaDocParser {
-                parseLuaFile(content, filePath) {
-                    const lines = content.split(/\r?\n/);
-                    const functions = [];
-
-                    let description = "";
-                    let pendingParams = [];
-                    let pendingReturn = { type: "void", description: "" };
-                    let currentDocClass = null;
-
-                    const pathParts = filePath.split("/");
-
-                    // apiSet: client / server / unknown
-                    let apiSet = "unknown";
-                    if (pathParts[0] === "client" || pathParts[0] === "server") {
-                        apiSet = pathParts[0];
-                    }
-
-                    // type: native / constructor / engine / general (2nd segment)
-                    let type = "general";
-                    if (pathParts[1]) {
-                        type = pathParts[1];
-                    }
-
-                    // folder-based category from path
-                    const fileName = pathParts[pathParts.length - 1] || "";
-                    const fileBase = fileName.replace(/\.lua$/i, "");
-
-                    let folderCategory = "misc";
-                    if (pathParts.length > 3) {
-                        // e.g. client/constructor/Actor/WebUI.lua → "Actor"
-                        folderCategory = pathParts[pathParts.length - 2];
-                    } else if (pathParts.length > 2) {
-                        // e.g. client/constructor/Actor.lua → "Actor"
-                        folderCategory = fileBase || "misc";
-                    } else {
-                        folderCategory = fileBase || "misc";
-                    }
-
-                    for (let i = 0; i < lines.length; i++) {
-                        const line = lines[i].trim();
-
-                        if (line.startsWith("---")) {
-                            // Doc comment line
-                            const comment = line.substring(3).trim();
-
-                            if (comment.startsWith("@class")) {
-                                const classMatch = comment.match(/@class\s+(\w+)/);
-                                if (classMatch) {
-                                    currentDocClass = classMatch[1];
-                                }
-                                continue;
-                            }
-
-                            if (comment.startsWith("@param")) {
-                                const paramMatch = comment.match(/@param\s+(\S+)\s+(\S+)(?:\s+@\[(out|opt)\])?\s*(.*)/);
-                                if (paramMatch) {
-                                    const [, name, typeName, modifier, desc] = paramMatch;
-                                    pendingParams.push({
-                                        name,
-                                        type: typeName,
-                                        modifier: modifier || null,
-                                        description: (desc || "").trim(),
-                                    });
-                                }
-                                continue;
-                            }
-
-                            if (comment.startsWith("@return")) {
-                                const returnMatch = comment.match(/@return\s+(\S+)(?:\s+(.*))?/);
-                                if (returnMatch) {
-                                    pendingReturn = {
-                                        type: returnMatch[1],
-                                        description: returnMatch[2] ? returnMatch[2].trim() : "",
-                                    };
-                                }
-                                continue;
-                            }
-
-                            if (!comment.startsWith("@")) {
-                                description += (description ? " " : "") + comment;
-                            }
-
-                            continue;
-                        }
-
-                        // Function signatures
-                        if (line.startsWith("function") || line.startsWith("local function")) {
-                            let classNameFromSig = null;
-                            let functionName = null;
-                            let params = "";
-                            let callStyle = null; // ".", ":", or null for global
-
-                            // Normalize to remove "local" prefix for matching
-                            const sigLine = line.replace(/^local\s+/, "");
-
-                            // function Class.Method(...)
-                            let match = sigLine.match(/^function\s+([A-Za-z_]\w*)\.([A-Za-z_]\w*)\s*\((.*)\)/);
-                            if (match) {
-                                classNameFromSig = match[1];
-                                functionName = match[2];
-                                params = match[3];
-                                callStyle = "."; // static / namespace style
-                            } else {
-                                // function Class:Method(...)
-                                match = sigLine.match(/^function\s+([A-Za-z_]\w*):([A-Za-z_]\w*)\s*\((.*)\)/);
-                                if (match) {
-                                    classNameFromSig = match[1];
-                                    functionName = match[2];
-                                    params = match[3];
-                                    callStyle = ":"; // instance style
-                                } else {
-                                    // function foo(...)
-                                    match = sigLine.match(/^function\s+([A-Za-z_]\w*)\s*\((.*)\)/);
-                                    if (match) {
-                                        functionName = match[1];
-                                        params = match[2];
-                                        callStyle = null; // global / free function
-                                    }
-                                }
-                            }
-
-                            if (!functionName) {
-                                // Not a recognized function pattern; clear doc state and continue
-                                description = "";
-                                pendingParams = [];
-                                pendingReturn = { type: "void", description: "" };
-                                continue;
-                            }
-
-                            const paramList = params
-                                .split(",")
-                                .map((p) => p.trim())
-                                .filter((p) => p.length > 0);
-
-                            // Ensure each param has a doc entry
-                            if (pendingParams.length < paramList.length) {
-                                for (let idx = pendingParams.length; idx < paramList.length; idx++) {
-                                    const paramName = paramList[idx];
-                                    pendingParams.push({
-                                        name: paramName,
-                                        type: "any",
-                                        modifier: null,
-                                        description: "",
-                                    });
-                                }
-                            }
-
-                            const logicalCategory = currentDocClass || folderCategory || "General";
-
-                            const func = {
-                                name: functionName,
-                                category: logicalCategory,
-                                folderCategory,
-                                apiSet,
-                                type,
-                                description,
-                                className: classNameFromSig || null,
-                                callStyle, // <--- NEW
-                                parameters: pendingParams.slice(),
-                                returns: pendingReturn,
-                                rawParams: params,
-                            };
-
-                            functions.push(func);
-
-                            // Reset doc state after a function
-                            description = "";
-                            pendingParams = [];
-                            pendingReturn = { type: "void", description: "" };
-                            continue;
-                        }
-
-                        // Any other real code line: reset doc state
-                        if (line !== "") {
-                            description = "";
-                            pendingParams = [];
-                            pendingReturn = { type: "void", description: "" };
-                        }
-                    }
-
-                    return functions;
-                }
-            }
-
             // ---------- Example helpers (Lua only) ----------
 
             function sampleValueForType(typeName, paramName) {
@@ -775,68 +588,14 @@
                 return callText;
             }
 
-            // GitHub Configuration
-            const GITHUB_OWNER = "Joshua-Hypersonic";
-            const GITHUB_REPO = "helix-docs";
-            const GITHUB_BRANCH = "main";
-            const DOCS_PATH = "docs";
+            // ---------- Main Application State ----------
 
-            // Main Application State
             let allFunctions = [];
             let filteredFunctions = [];
             let classMap = {};
             let selectedClassKey = null;
 
-            async function fetchGitHubDirectory(path) {
-                const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`;
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        console.error(`Failed to fetch directory: ${path}`);
-                        return [];
-                    }
-                    return await response.json();
-                } catch (error) {
-                    console.error(`Error fetching directory ${path}:`, error);
-                    return [];
-                }
-            }
-
-            async function fetchGitHubFile(path) {
-                const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`;
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        console.error(`Failed to fetch file: ${path}`);
-                        return null;
-                    }
-                    return await response.text();
-                } catch (error) {
-                    console.error(`Error fetching file ${path}:`, error);
-                    return null;
-                }
-            }
-
-            async function recursivelyFindLuaFiles(path, relativePath = "") {
-                const files = [];
-                const contents = await fetchGitHubDirectory(path);
-
-                for (const item of contents) {
-                    const itemRelativePath = relativePath ? `${relativePath}/${item.name}` : item.name;
-
-                    if (item.type === "file" && item.name.endsWith(".lua")) {
-                        files.push({
-                            path: item.path,
-                            relativePath: itemRelativePath,
-                        });
-                    } else if (item.type === "dir") {
-                        const subFiles = await recursivelyFindLuaFiles(item.path, itemRelativePath);
-                        files.push(...subFiles);
-                    }
-                }
-
-                return files;
-            }
+            // ---------- UI + Filtering ----------
 
             function populateCategoryFilter() {
                 const categories = [...new Set(allFunctions.map((f) => f.category).filter((c) => c && c.trim().length > 0))].sort();
@@ -924,9 +683,9 @@
                     const item = document.createElement("div");
                     item.className = "function-item" + (key === selectedClassKey ? " active" : "");
                     item.innerHTML = `
-                        <div class="function-name">${group.name}</div>
-                        <div class="function-meta">${group.functions.length} function${group.functions.length === 1 ? "" : "s"}</div>
-                    `;
+                <div class="function-name">${group.name}</div>
+                <div class="function-meta">${group.functions.length} function${group.functions.length === 1 ? "" : "s"}</div>
+            `;
 
                     item.addEventListener("click", () => {
                         selectedClassKey = key;
@@ -986,8 +745,8 @@
                     let apiClass = "unknown";
 
                     if (Array.isArray(func.apiSet)) {
-                        apiValue = func.apiSet.join(" / "); // Displays "client / server"
-                        apiClass = "shared"; // Apply the shared CSS class
+                        apiValue = func.apiSet.join(" / "); // e.g. "client / server"
+                        apiClass = "shared";
                     } else if (typeof func.apiSet === "string") {
                         apiValue = func.apiSet;
                         apiClass = func.apiSet.toLowerCase(); // "client", "server"
@@ -1030,11 +789,11 @@
                                 modifier = '<span class="param-modifier">[output]</span>';
                             }
                             li.innerHTML = `
-                                <span class="param-name">${p.name}</span>
-                                <span class="param-type">${p.type}</span>
-                                ${modifier}
-                                ${p.description ? " - " + p.description : ""}
-                            `;
+                        <span class="param-name">${p.name}</span>
+                        <span class="param-type">${p.type}</span>
+                        ${modifier}
+                        ${p.description ? " - " + p.description : ""}
+                    `;
                             ul.appendChild(li);
                         });
                         card.appendChild(ul);
@@ -1068,21 +827,21 @@
                     exampleTitle.textContent = "Example";
                     card.appendChild(exampleTitle);
 
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "code-block-wrapper";
+                    const codeWrapper = document.createElement("div");
+                    codeWrapper.className = "code-block-wrapper";
 
                     const label = document.createElement("div");
                     label.className = "code-label";
                     label.textContent = "Lua";
-                    wrapper.appendChild(label);
+                    codeWrapper.appendChild(label);
 
                     const pre = document.createElement("pre");
                     const code = document.createElement("code");
                     code.textContent = generateLuaExample(func);
                     pre.appendChild(code);
-                    wrapper.appendChild(pre);
+                    codeWrapper.appendChild(pre);
 
-                    card.appendChild(wrapper);
+                    card.appendChild(codeWrapper);
 
                     funcsContainer.appendChild(card);
                 });
@@ -1091,43 +850,22 @@
                 detailEl.appendChild(wrapper);
             }
 
+            // ---------- Data load from pre-generated JSON ----------
+
             async function loadFunctions() {
                 const listEl = document.getElementById("functionList");
-                listEl.innerHTML = '<div class="loading">Loading classes from GitHub...</div>';
+                listEl.innerHTML = '<div class="loading">Loading classes...</div>';
 
                 try {
-                    const parser = new LuaDocParser();
-
-                    const clientFiles = await recursivelyFindLuaFiles(`${DOCS_PATH}/client`, "client");
-                    const serverFiles = await recursivelyFindLuaFiles(`${DOCS_PATH}/server`, "server");
-                    const allFiles = [...clientFiles, ...serverFiles];
-
-                    const functionMap = new Map();
-
-                    for (const file of allFiles) {
-                        const content = await fetchGitHubFile(file.path);
-                        if (!content) continue;
-
-                        const parsed = parser.parseLuaFile(content, file.relativePath);
-
-                        for (const func of parsed) {
-                            const key = func.className ? `${func.className}.${func.name}` : func.name;
-
-                            if (functionMap.has(key)) {
-                                const existing = functionMap.get(key);
-                                if (!Array.isArray(existing.apiSet)) {
-                                    existing.apiSet = [existing.apiSet];
-                                }
-                                if (func.apiSet && !existing.apiSet.includes(func.apiSet)) {
-                                    existing.apiSet.push(func.apiSet);
-                                }
-                            } else {
-                                functionMap.set(key, func);
-                            }
-                        }
+                    const response = await fetch("docs-index.json");
+                    if (!response.ok) {
+                        throw new Error("Failed to load docs-index.json");
                     }
 
-                    allFunctions = Array.from(functionMap.values());
+                    const functionsFromJson = await response.json();
+
+                    // docs-index.json is already merged/processed by your Node script
+                    allFunctions = functionsFromJson;
                     filteredFunctions = [...allFunctions];
 
                     populateCategoryFilter();
@@ -1138,7 +876,8 @@
                 }
             }
 
-            // Event wiring
+            // ---------- Event wiring ----------
+
             document.getElementById("searchBar").addEventListener("input", () => {
                 applyFiltersAndRender();
             });
