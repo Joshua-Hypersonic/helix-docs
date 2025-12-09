@@ -15,22 +15,6 @@ function ULocalLightComponent:SetAttenuationRadius(NewRadius) end
 
 ---@param SrcUnits ELightUnits
 ---@param TargetUnits ELightUnits
----@param CosHalfConeAngle number @[opt] 
+---@param CosHalfConeAngle number @[opt]
 ---@return number
 function ULocalLightComponent.GetUnitsConversionFactor(SrcUnits, TargetUnits, CosHalfConeAngle) end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function ULocalLightComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function ULocalLightComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function ULocalLightComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

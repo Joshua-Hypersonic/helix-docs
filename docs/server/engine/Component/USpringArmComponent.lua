@@ -35,19 +35,3 @@ function USpringArmComponent:GetUnfixedCameraPosition() end
 ---This is derived from attachment to our parent and considering the UsePawnControlRotation and absolute rotation flags.
 ---@return FRotator
 function USpringArmComponent:GetTargetRotation() end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function USpringArmComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function USpringArmComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function USpringArmComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

@@ -520,22 +520,55 @@
             // ---------- Example helpers (Lua only) ----------
 
             function sampleValueForType(typeName, paramName) {
-                if (!typeName) return "value";
+                if (!typeName) return "nil";
 
                 const t = typeName.toLowerCase();
+                const pname = (paramName || "value").toLowerCase();
 
-                if (t === "string" || t === "std::string") return `"${paramName || "text"}"`;
-                if (t === "number" || t === "float" || t === "double" || t === "int") return "0";
-                if (t === "boolean" || t === "bool") return "true";
-                if (t === "table") return "{}";
-                if (t === "function") return "function() end";
-                if (t === "vector" || t === "vector3") return "Vector(0, 0, 0)";
-                if (t === "color" || t === "colour") return "Color(255, 255, 255)";
+                // strings / names
+                if (t === "string" || t === "std::string" || t === "fstring" || t === "name" || t === "fname") {
+                    return `"${paramName || "value"}"`;
+                }
 
-                // Class-like types: start with uppercase letter
-                if (/^[A-Z]\w*$/.test(typeName)) return `${typeName}.new()`;
+                // numbers
+                if (t === "number" || t === "float" || t === "double" || t === "int" || t === "int32" || t === "int64") {
+                    return "0";
+                }
 
-                return "value";
+                // booleans
+                if (t === "boolean" || t === "bool") {
+                    return "false";
+                }
+
+                // vectors / rotators / colors (UE-ish)
+                if (t.includes("vector")) {
+                    return "Vector(0, 0, 0)";
+                }
+                if (t.includes("rotator")) {
+                    return "Rotator(0, 0, 0)";
+                }
+                if (t.includes("color")) {
+                    // adjust if you prefer Color(255,255,255)
+                    return "Color(1, 1, 1, 1)";
+                }
+
+                // containers
+                if (t.startsWith("tarray<") || t.startsWith("tset<") || t.startsWith("tmap<") || t === "table") {
+                    return "{}";
+                }
+
+                // TSubclassOf / class types → usually passed as nil or some class reference
+                if (t.startsWith("tsubclassof") || t.endsWith("_class")) {
+                    return "nil";
+                }
+
+                // UObject / AActor / UActorComponent / etc → nil is safe
+                if (t.startsWith("u") || t.startsWith("a")) {
+                    return "nil";
+                }
+
+                // fallback for everything else: don't invent constructors, just nil
+                return "nil";
             }
 
             function sampleValueForParam(p) {
@@ -543,7 +576,7 @@
                 const type = (p.type || "").toLowerCase();
 
                 if (name.startsWith("is") || name.startsWith("has") || type === "bool" || type === "boolean") {
-                    return "true";
+                    return "false";
                 }
                 if (name.includes("count") || name.includes("index") || name.includes("id")) {
                     return "0";
@@ -556,7 +589,18 @@
             }
 
             function generateLuaExample(func) {
-                // Work out Class / operator
+                const params = func.parameters || [];
+
+                // 1) Setup locals based on param names/types
+                const setupLines = [];
+
+                params.forEach((p) => {
+                    const paramName = p.name && p.name.trim().length > 0 ? p.name : "param";
+                    const sample = sampleValueForParam(p);
+                    setupLines.push(`local ${paramName} = ${sample}`);
+                });
+
+                // 2) Work out Class / operator
                 let qualifier = "";
                 let callOp = "";
 
@@ -571,21 +615,32 @@
                     callOp = "";
                 }
 
-                const args = (func.parameters || []).map((p) => sampleValueForParam(p)).join(", ");
+                const argList = params.map((p) => (p.name && p.name.trim().length > 0 ? p.name : "param")).join(", ");
 
                 let callText;
                 if (qualifier) {
-                    callText = `${qualifier}${callOp}${func.name}(${args})`;
+                    callText = `${qualifier}${callOp}${func.name}(${argList})`;
                 } else {
-                    callText = `${func.name}(${args})`;
+                    callText = `${func.name}(${argList})`;
                 }
 
                 const returns = func.returns || { type: "void" };
+                let finalCall = callText;
+
                 if (returns.type && returns.type.toLowerCase() !== "void") {
-                    return `local result = ${callText}`;
+                    finalCall = `local result = ${callText}`;
                 }
 
-                return callText;
+                // 3) Assemble the full example
+                const lines = [];
+
+                if (setupLines.length > 0) {
+                    lines.push(...setupLines, ""); // blank line before call
+                }
+
+                lines.push(finalCall);
+
+                return lines.join("\n");
             }
 
             // ---------- Main Application State ----------

@@ -86,7 +86,7 @@ function USkeletalMeshComponent:UnlinkAnimClassLayers(InClass) end
 ---MCP, this function will unbind the cloth and resume simulation.
 ---space, we will restore this setting. This will cause the leader component to reset which may be
 ---undesirable.
----@param bRestoreSimulationSpace boolean @[opt] 
+---@param bRestoreSimulationSpace boolean @[opt]
 function USkeletalMeshComponent:UnbindClothFromLeaderPoseComponent(bRestoreSimulationSpace) end
 
 ---Toggles whether the post process blueprint will run for this component
@@ -109,7 +109,7 @@ function USkeletalMeshComponent:Stop() end
 ---Takes a snapshot of this skeletal mesh component's pose and saves it to the specified snapshot.
 ---The snapshot is taken at the current LOD, so if for example you took the snapshot at LOD1
 ---and then used it at LOD0 any bones not in LOD1 will use the reference pose
----@param Snapshot FPoseSnapshot @[out] 
+---@param Snapshot FPoseSnapshot @[out]
 function USkeletalMeshComponent:SnapshotPose(Snapshot) end
 
 ---Sets whether or not to animate cloth in the editor. Requires Update Animation In Editor to also be true.
@@ -140,7 +140,7 @@ function USkeletalMeshComponent:SetSkeletalMeshAsset(NewMesh) end
 ---      * Because of that reason, it is not safe to be used during construction script
 ---      * Please use OverrideAnimationData for construction script. That will override AnimationData to be serialized
 ---@param InPos number
----@param bFireNotifies boolean @[opt] 
+---@param bFireNotifies boolean @[opt]
 function USkeletalMeshComponent:SetPosition(InPos, bFireNotifies) end
 
 ---Animation play functions
@@ -163,19 +163,19 @@ function USkeletalMeshComponent:SetPhysicsBlendWeight(PhysicsBlendWeight) end
 ---In case an override post-processing AnimBP is set, the one set in skeletal mesh asset will be ignored and not used.
 ---                                                       the game is running and the anim instances need to be re-initialized.
 ---@param InPostProcessAnimBlueprint TSubclassOf_UAnimInstance_
----@param ReinitAnimInstances boolean @[opt] 
+---@param ReinitAnimInstances boolean @[opt]
 function USkeletalMeshComponent:SetOverridePostProcessAnimBP(InPostProcessAnimBlueprint, ReinitAnimInstances) end
 
 ---Changes the value of bNotifyRigidBodyCollision on all bodies below a given bone
 ---@param bNewNotifyRigidBodyCollision boolean
----@param BoneName string @[opt] 
----@param bIncludeSelf boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:SetNotifyRigidBodyCollisionBelow(bNewNotifyRigidBodyCollision, BoneName, bIncludeSelf) end
 
 ---Set Morph Target with Name and Value(0-1)
 ---@param MorphTargetName string
 ---@param Value number
----@param bRemoveZeroWeight boolean @[opt] 
+---@param bRemoveZeroWeight boolean @[opt]
 function USkeletalMeshComponent:SetMorphTarget(MorphTargetName, Value, bRemoveZeroWeight) end
 
 ---Disable physics blending of bones *
@@ -187,7 +187,7 @@ function USkeletalMeshComponent:SetEnablePhysicsBlending(bNewBlendPhysics) end
 ---In that case, consider using UPrimitiveComponent::EnableGravity.
 ---@param bEnableGravity boolean
 ---@param BoneName string
----@param bIncludeSelf boolean @[opt] 
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:SetEnableGravityOnAllBodiesBelow(bEnableGravity, BoneName, bIncludeSelf) end
 
 ---Enables or disables gravity for the given bone.
@@ -210,13 +210,13 @@ function USkeletalMeshComponent:SetDefaultAnimatingRigOverride(InAnimatingRig) e
 
 ---Sets the constraint profile properties (limits, motors, etc...) to match the constraint profile as defined in the physics asset for all constraints. If profile name is not found the joint is set to use the default constraint profile.
 ---@param ProfileName string
----@param bDefaultIfNotFound boolean @[opt] 
+---@param bDefaultIfNotFound boolean @[opt]
 function USkeletalMeshComponent:SetConstraintProfileForAll(ProfileName, bDefaultIfNotFound) end
 
 ---Sets the constraint profile properties (limits, motors, etc...) to match the constraint profile as defined in the physics asset. If profile name is not found the joint is set to use the default constraint profile.
 ---@param JointName string
 ---@param ProfileName string
----@param bDefaultIfNotFound boolean @[opt] 
+---@param bDefaultIfNotFound boolean @[opt]
 function USkeletalMeshComponent:SetConstraintProfile(JointName, ProfileName, bDefaultIfNotFound) end
 
 ---@param Scale number
@@ -229,7 +229,7 @@ function USkeletalMeshComponent:SetBodySimulatePhysics(InBoneName, bSimulate) en
 
 ---Changes the value of bNotifyRigidBodyCollision for a given body
 ---@param bNewNotifyRigidBodyCollision boolean
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function USkeletalMeshComponent:SetBodyNotifyRigidBodyCollision(bNewNotifyRigidBodyCollision, BoneName) end
 
 ---Set the anim instance class. Clears and re-initializes the anim instance with the new class and sets animation mode to 'AnimationBlueprint'
@@ -238,7 +238,7 @@ function USkeletalMeshComponent:SetAnimInstanceClass(NewClass) end
 
 ---Set the Animation Mode
 ---@param InAnimationMode integer
----@param bForceInitAnimScriptInstance boolean @[opt] 
+---@param bForceInitAnimScriptInstance boolean @[opt]
 function USkeletalMeshComponent:SetAnimationMode(InAnimationMode, bForceInitAnimScriptInstance) end
 
 ---Animation play functions
@@ -258,7 +258,7 @@ function USkeletalMeshComponent:SetAngularLimits(InBoneName, Swing1LimitAngle, T
 
 ---Sets whether or not to allow rigid body animation nodes for this component
 ---@param bInAllow boolean
----@param bReinitAnim boolean @[opt] 
+---@param bReinitAnim boolean @[opt]
 function USkeletalMeshComponent:SetAllowRigidBodyAnimNode(bInAllow, bReinitAnim) end
 
 ---resets, and then only allow the following list to be allowed/disallowed
@@ -277,20 +277,20 @@ function USkeletalMeshComponent:SetAllowAnimCurveEvaluation(bInAllow) end
 ---Enable or Disable AngularVelocityDrive. If motor is in SLERP mode it will be turned on if either EnableSwingDrive OR EnableTwistDrive are enabled. In Twist and Swing mode the twist and the swing can be controlled individually.
 ---@param bEnableSwingDrive boolean
 ---@param bEnableTwistDrive boolean
----@param bSkipCustomPhysicsType boolean @[opt] 
+---@param bSkipCustomPhysicsType boolean @[opt]
 function USkeletalMeshComponent:SetAllMotorsAngularVelocityDrive(bEnableSwingDrive, bEnableTwistDrive, bSkipCustomPhysicsType) end
 
 ---Enable or Disable AngularPositionDrive. If motor is in SLERP mode it will be turned on if either EnableSwingDrive OR EnableTwistDrive are enabled. In Twist and Swing mode the twist and the swing can be controlled individually.
 ---@param bEnableSwingDrive boolean
 ---@param bEnableTwistDrive boolean
----@param bSkipCustomPhysicsType boolean @[opt] 
+---@param bSkipCustomPhysicsType boolean @[opt]
 function USkeletalMeshComponent:SetAllMotorsAngularPositionDrive(bEnableSwingDrive, bEnableTwistDrive, bSkipCustomPhysicsType) end
 
 ---Set Angular Drive motors params for all constraint instances
 ---@param InSpring number
 ---@param InDamping number
 ---@param InForceLimit number
----@param bSkipCustomPhysicsType boolean @[opt] 
+---@param bSkipCustomPhysicsType boolean @[opt]
 function USkeletalMeshComponent:SetAllMotorsAngularDriveParams(InSpring, InDamping, InForceLimit, bSkipCustomPhysicsType) end
 
 ---Set bSimulatePhysics to true for all bone bodies. Does not change the component bSimulatePhysics flag.
@@ -298,13 +298,13 @@ function USkeletalMeshComponent:SetAllMotorsAngularDriveParams(InSpring, InDampi
 function USkeletalMeshComponent:SetAllBodiesSimulatePhysics(bNewSimulate) end
 
 ---@param PhysicsBlendWeight number
----@param bSkipCustomPhysicsType boolean @[opt] 
+---@param bSkipCustomPhysicsType boolean @[opt]
 function USkeletalMeshComponent:SetAllBodiesPhysicsBlendWeight(PhysicsBlendWeight, bSkipCustomPhysicsType) end
 
 ---Set all of the bones below passed in bone to be simulated
 ---@param InBoneName string
 ---@param bNewSimulate boolean
----@param bIncludeSelf boolean @[opt] 
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:SetAllBodiesBelowSimulatePhysics(InBoneName, bNewSimulate, bIncludeSelf) end
 
 ---[WARNING: Chaos Only]
@@ -313,20 +313,20 @@ function USkeletalMeshComponent:SetAllBodiesBelowSimulatePhysics(InBoneName, bNe
 ---This is different from SetAllBodiesBelowSimulatePhysics that changes bodies to Kinematic/simulated
 ---@param InBoneName string
 ---@param bDisabled boolean
----@param bIncludeSelf boolean @[opt] 
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:SetAllBodiesBelowPhysicsDisabled(InBoneName, bDisabled, bIncludeSelf) end
 
 ---Set all of the bones below passed in bone to be simulated
 ---@param InBoneName string
 ---@param PhysicsBlendWeight number
----@param bSkipCustomPhysicsType boolean @[opt] 
----@param bIncludeSelf boolean @[opt] 
+---@param bSkipCustomPhysicsType boolean @[opt]
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:SetAllBodiesBelowPhysicsBlendWeight(InBoneName, PhysicsBlendWeight, bSkipCustomPhysicsType, bIncludeSelf) end
 
 ---set the linear velocity of the child bodies to match that of the given parent bone
 ---@param InBoneName string
 ---@param LinearVelocity FVector
----@param bIncludeSelf boolean @[opt] 
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:SetAllBodiesBelowLinearVelocity(InBoneName, LinearVelocity, bIncludeSelf) end
 
 ---Resumes a previously suspended clothing simulation, teleporting the clothing on the next tick
@@ -340,7 +340,7 @@ function USkeletalMeshComponent:ResetClothCollisionSources() end
 
 ---Informs any active anim instances (main instance, linked instances, post instance) that a dynamics reset is required
 ---for example if a teleport occurs.
----@param InTeleportType ETeleportType @[opt] 
+---@param InTeleportType ETeleportType @[opt]
 function USkeletalMeshComponent:ResetAnimInstanceDynamics(InTeleportType) end
 
 ---By reset, it will allow all the curves to be evaluated
@@ -383,10 +383,10 @@ function USkeletalMeshComponent:Play(bLooping) end
 ---This can be useful if you'd like to make a blueprint with custom default animation per component
 ---This sets single player mode, which means you can't use AnimBlueprint with it
 ---@param InAnimToPlay UAnimationAsset
----@param bIsLooping boolean @[opt] 
----@param bIsPlaying boolean @[opt] 
----@param Position number @[opt] 
----@param PlayRate number @[opt] 
+---@param bIsLooping boolean @[opt]
+---@param bIsPlaying boolean @[opt]
+---@param Position number @[opt]
+---@param PlayRate number @[opt]
 function USkeletalMeshComponent:OverrideAnimationData(InAnimToPlay, bIsLooping, bIsPlaying, Position, PlayRate) end
 
 ---Runs through all nodes, attempting to find linked instance by name/tag, then sets the class of each node if the tag matches
@@ -403,10 +403,10 @@ function USkeletalMeshComponent:LinkAnimClassLayers(InClass) end
 
 ---Given a world position, find the closest point on the physics asset. Note that this is independent of collision and welding. This is based purely on animation position
 ---@param WorldPosition FVector
----@param ClosestWorldPosition FVector @[out] 
----@param Normal FVector @[out] 
----@param BoneName string @[out] 
----@param Distance number @[out] 
+---@param ClosestWorldPosition FVector @[out]
+---@param Normal FVector @[out]
+---@param BoneName string @[out]
+---@param Distance number @[out]
 ---@return boolean
 function USkeletalMeshComponent:K2_GetClosestPointOnPhysicsAsset(WorldPosition, ClosestWorldPosition, Normal, BoneName, Distance) end
 
@@ -437,8 +437,8 @@ function USkeletalMeshComponent:HasValidAnimationInstance() end
 ---Get FTransform type attribute value.
 ---@param BoneName string
 ---@param AttributeName string
----@param OutValue FTransform @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue FTransform @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetTransformAttribute_Ref(BoneName, AttributeName, OutValue, LookupType) end
 
@@ -446,8 +446,8 @@ function USkeletalMeshComponent:GetTransformAttribute_Ref(BoneName, AttributeNam
 ---@param BoneName string
 ---@param AttributeName string
 ---@param DefaultValue FTransform
----@param OutValue FTransform @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue FTransform @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetTransformAttribute(BoneName, AttributeName, DefaultValue, OutValue, LookupType) end
 
@@ -462,8 +462,8 @@ function USkeletalMeshComponent:GetTeleportDistanceThreshold() end
 ---Get string type attribute value.
 ---@param BoneName string
 ---@param AttributeName string
----@param OutValue string @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue string @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetStringAttribute_Ref(BoneName, AttributeName, OutValue, LookupType) end
 
@@ -471,8 +471,8 @@ function USkeletalMeshComponent:GetStringAttribute_Ref(BoneName, AttributeName, 
 ---@param BoneName string
 ---@param AttributeName string
 ---@param DefaultValue string
----@param OutValue string @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue string @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetStringAttribute(BoneName, AttributeName, DefaultValue, OutValue, LookupType) end
 
@@ -521,7 +521,7 @@ function USkeletalMeshComponent:GetLinkedAnimLayerInstanceByGroup(InGroup) end
 function USkeletalMeshComponent:GetLinkedAnimLayerInstanceByClass(InClass) end
 
 ---@param InTag string
----@param OutLinkedInstances TArray_UAnimInstance_ @[out] 
+---@param OutLinkedInstances TArray_UAnimInstance_ @[out]
 function USkeletalMeshComponent:GetLinkedAnimGraphInstancesByTag(InTag, OutLinkedInstances) end
 
 ---Returns the a tagged linked instance node. If no linked instances are found or none are tagged with the
@@ -533,8 +533,8 @@ function USkeletalMeshComponent:GetLinkedAnimGraphInstanceByTag(InTag) end
 ---Get integer type attribute value.
 ---@param BoneName string
 ---@param AttributeName string
----@param OutValue integer @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue integer @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetIntegerAttribute_Ref(BoneName, AttributeName, OutValue, LookupType) end
 
@@ -542,16 +542,16 @@ function USkeletalMeshComponent:GetIntegerAttribute_Ref(BoneName, AttributeName,
 ---@param BoneName string
 ---@param AttributeName string
 ---@param DefaultValue integer
----@param OutValue integer @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue integer @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetIntegerAttribute(BoneName, AttributeName, DefaultValue, OutValue, LookupType) end
 
 ---Get float type attribute value.
 ---@param BoneName string
 ---@param AttributeName string
----@param OutValue number @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue number @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetFloatAttribute_Ref(BoneName, AttributeName, OutValue, LookupType) end
 
@@ -559,8 +559,8 @@ function USkeletalMeshComponent:GetFloatAttribute_Ref(BoneName, AttributeName, O
 ---@param BoneName string
 ---@param AttributeName string
 ---@param DefaultValue number
----@param OutValue number @[out] 
----@param LookupType ECustomBoneAttributeLookup @[opt] 
+---@param OutValue number @[out]
+---@param LookupType ECustomBoneAttributeLookup @[opt]
 ---@return boolean
 function USkeletalMeshComponent:GetFloatAttribute(BoneName, AttributeName, DefaultValue, OutValue, LookupType) end
 
@@ -579,9 +579,9 @@ function USkeletalMeshComponent:GetDefaultAnimatingRig() end
 
 ---Gets the current Angular state for a named bone constraint
 ---@param InBoneName string
----@param Swing1Angle number @[out] 
----@param TwistAngle number @[out] 
----@param Swing2Angle number @[out] 
+---@param Swing1Angle number @[out]
+---@param TwistAngle number @[out]
+---@param Swing2Angle number @[out]
 function USkeletalMeshComponent:GetCurrentJointAngles(InBoneName, Swing1Angle, TwistAngle, Swing2Angle) end
 
 ---Gets all the constraints attached to a body
@@ -589,12 +589,12 @@ function USkeletalMeshComponent:GetCurrentJointAngles(InBoneName, Swing1Angle, T
 ---@param bParentConstraints boolean
 ---@param bChildConstraints boolean
 ---@param bIncludesTerminated boolean
----@param OutConstraints TArray_FConstraintInstanceAccessor_ @[out] 
+---@param OutConstraints TArray_FConstraintInstanceAccessor_ @[out]
 function USkeletalMeshComponent:GetConstraintsFromBody(BodyName, bParentConstraints, bChildConstraints, bIncludesTerminated, OutConstraints) end
 
 ---Gets all the constraints
 ---@param bIncludesTerminated boolean
----@param OutConstraints TArray_FConstraintInstanceAccessor_ @[out] 
+---@param OutConstraints TArray_FConstraintInstanceAccessor_ @[out]
 function USkeletalMeshComponent:GetConstraints(bIncludesTerminated, OutConstraints) end
 
 ---Gets a constraint by its name
@@ -612,8 +612,8 @@ function USkeletalMeshComponent:GetClothMaxDistanceScale() end
 function USkeletalMeshComponent:GetClothingSimulationInteractor() end
 
 ---Returns the mass (in kg) of the given bone
----@param BoneName string @[opt] 
----@param bScaleMass boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bScaleMass boolean @[opt]
 ---@return number
 function USkeletalMeshComponent:GetBoneMass(BoneName, bScaleMass) end
 
@@ -676,17 +676,17 @@ function USkeletalMeshComponent:AllowAnimCurveEvaluation(NameOfCurve, bAllow) en
 
 ---Add impulse to all single rigid bodies below. Good for one time instant burst.
 ---@param Impulse FVector
----@param BoneName string @[opt] 
----@param bVelChange boolean @[opt] 
----@param bIncludeSelf boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bVelChange boolean @[opt]
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:AddImpulseToAllBodiesBelow(Impulse, BoneName, bVelChange, bIncludeSelf) end
 
 ---Add a force to all rigid bodies below.
 ---This is like a 'thruster'. Good for adding a burst over some (non zero) time. Should be called every frame for the duration of the force.
 ---@param Force FVector
----@param BoneName string @[opt] 
----@param bAccelChange boolean @[opt] 
----@param bIncludeSelf boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bAccelChange boolean @[opt]
+---@param bIncludeSelf boolean @[opt]
 function USkeletalMeshComponent:AddForceToAllBodiesBelow(Force, BoneName, bAccelChange, bIncludeSelf) end
 
 ---Add a collision source for the cloth on this component.
@@ -699,21 +699,5 @@ function USkeletalMeshComponent:AddClothCollisionSource(InSourceComponent, InSou
 ---Accumulate AddPhysicsBlendWeight to physics blendweight for all of the bones below passed in bone to be simulated
 ---@param InBoneName string
 ---@param AddPhysicsBlendWeight number
----@param bSkipCustomPhysicsType boolean @[opt] 
+---@param bSkipCustomPhysicsType boolean @[opt]
 function USkeletalMeshComponent:AccumulateAllBodiesBelowPhysicsBlendWeight(InBoneName, AddPhysicsBlendWeight, bSkipCustomPhysicsType) end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function USkeletalMeshComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function USkeletalMeshComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function USkeletalMeshComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

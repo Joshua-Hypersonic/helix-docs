@@ -116,12 +116,12 @@ local UPrimitiveComponent = {}
 
 ---Returns true if this component has been rendered "recently", with a tolerance in seconds to define what "recent" means.
 ---e.g.: If a tolerance of 0.1 is used, this function will return true only if the actor was rendered in the last 0.1 seconds of game time.
----@param Tolerance number @[opt] 
+---@param Tolerance number @[opt]
 ---@return boolean
 function UPrimitiveComponent:WasRecentlyRendered(Tolerance) end
 
 ---'Wake' physics simulation for a single body.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:WakeRigidBody(BoneName) end
 
 ---Ensure simulation is running for all bodies in this component.
@@ -151,12 +151,12 @@ function UPrimitiveComponent:SetVectorParameterForCustomPrimitiveData(ParameterN
 
 ---[EXPERIMENTAL] Set whether this component should use Motion-Aware Collision Detection
 ---@param InUseMACD boolean
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetUseMACD(InUseMACD, BoneName) end
 
 ---Set whether this component should use Continuous Collision Detection
 ---@param InUseCCD boolean
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetUseCCD(InUseCCD, BoneName) end
 
 ---Enables/disables whether this component should be updated by simulation when it is kinematic. This is needed if (for example) its velocity needs to be accessed.
@@ -222,35 +222,35 @@ function UPrimitiveComponent:SetPhysMaterialOverride(NewPhysMaterial) end
 
 ---Set the maximum angular velocity of a single body.
 ---@param NewMaxAngVel number
----@param bAddToCurrent boolean @[opt] 
----@param BoneName string @[opt] 
+---@param bAddToCurrent boolean @[opt]
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetPhysicsMaxAngularVelocityInRadians(NewMaxAngVel, bAddToCurrent, BoneName) end
 
 ---Set the maximum angular velocity of a single body.
 ---@param NewMaxAngVel number
----@param bAddToCurrent boolean @[opt] 
----@param BoneName string @[opt] 
+---@param bAddToCurrent boolean @[opt]
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetPhysicsMaxAngularVelocityInDegrees(NewMaxAngVel, bAddToCurrent, BoneName) end
 
 ---Set the linear velocity of a single body.
 ---This should be used cautiously - it may be better to use AddForce or AddImpulse.
 ---@param NewVel FVector
----@param bAddToCurrent boolean @[opt] 
----@param BoneName string @[opt] 
+---@param bAddToCurrent boolean @[opt]
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetPhysicsLinearVelocity(NewVel, bAddToCurrent, BoneName) end
 
 ---Set the angular velocity of a single body.
 ---This should be used cautiously - it may be better to use AddTorque or AddImpulse.
 ---@param NewAngVel FVector
----@param bAddToCurrent boolean @[opt] 
----@param BoneName string @[opt] 
+---@param bAddToCurrent boolean @[opt]
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetPhysicsAngularVelocityInRadians(NewAngVel, bAddToCurrent, BoneName) end
 
 ---Set the angular velocity of a single body.
 ---This should be used cautiously - it may be better to use AddTorque or AddImpulse.
 ---@param NewAngVel FVector
----@param bAddToCurrent boolean @[opt] 
----@param BoneName string @[opt] 
+---@param bAddToCurrent boolean @[opt]
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetPhysicsAngularVelocityInDegrees(NewAngVel, bAddToCurrent, BoneName) end
 
 ---Changes the value of bOwnerNoSee.
@@ -269,8 +269,8 @@ function UPrimitiveComponent:SetNotifyRigidBodyCollision(bNewNotifyRigidBodyColl
 ---A value of zero will allow objects that are spawned overlapping to go to sleep without moving rather than pop out of each other. E.g., use zero if you spawn dynamic rocks
 ---partially embedded in the ground and want them to be interactive but not pop out of the ground when touched.
 ---A negative value means that the config setting CollisionInitialOverlapDepenetrationVelocity will be used.
----@param BoneName string @[opt] 
----@param InMaxDepenetrationVelocity number @[opt] 
+---@param BoneName string @[opt]
+---@param InMaxDepenetrationVelocity number @[opt]
 function UPrimitiveComponent:SetMaxDepenetrationVelocity(BoneName, InMaxDepenetrationVelocity) end
 
 ---Changes the material applied to an element of the mesh.
@@ -284,16 +284,16 @@ function UPrimitiveComponent:SetMaterialByName(MaterialSlotName, Material) end
 function UPrimitiveComponent:SetMaterial(ElementIndex, Material) end
 
 ---Change the mass scale used to calculate the mass of a single physics body
----@param BoneName string @[opt] 
----@param InMassScale number @[opt] 
+---@param BoneName string @[opt]
+---@param InMassScale number @[opt]
 function UPrimitiveComponent:SetMassScale(BoneName, InMassScale) end
 
 ---Override the mass (in Kg) of a single physics body.
 ---Note that in the case where multiple bodies are attached together, the override mass will be set for the entire group.
 ---Set the Override Mass to false if you want to reset the body's mass to the auto-calculated physx mass.
----@param BoneName string @[opt] 
----@param MassInKg number @[opt] 
----@param bOverrideMass boolean @[opt] 
+---@param BoneName string @[opt]
+---@param MassInKg number @[opt]
+---@param bOverrideMass boolean @[opt]
 function UPrimitiveComponent:SetMassOverrideInKg(BoneName, MassInKg, bOverrideMass) end
 
 ---Sets the linear damping of this component.
@@ -418,7 +418,7 @@ function UPrimitiveComponent:SetCollisionResponseToAllChannels(NewResponse) end
 ---This function is called by constructors when they set ProfileName
 ---This will change current CollisionProfileName to be this, and overwrite Collision Setting
 ---@param InCollisionProfileName string
----@param bUpdateOverlaps boolean @[opt] 
+---@param bUpdateOverlaps boolean @[opt]
 function UPrimitiveComponent:SetCollisionProfileName(InCollisionProfileName, bUpdateOverlaps) end
 
 ---Changes the collision channel that this object uses when it moves
@@ -432,7 +432,7 @@ function UPrimitiveComponent:SetCollisionEnabled(NewType) end
 ---Set the center of mass of a single body. This will offset the physx-calculated center of mass.
 ---Note that in the case where multiple bodies are attached together, the center of mass will be set for the entire group.
 ---@param CenterOfMassOffset FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:SetCenterOfMass(CenterOfMassOffset, BoneName) end
 
 ---Changes the value of CastShadow.
@@ -452,7 +452,7 @@ function UPrimitiveComponent:SetCastHiddenShadow(NewCastHiddenShadow) end
 function UPrimitiveComponent:SetCastContactShadow(bInCastContactShadow) end
 
 ---Scale the bounds of this object, used for frustum culling. Useful for features like WorldPositionOffset.
----@param NewBoundsScale number @[opt] 
+---@param NewBoundsScale number @[opt]
 function UPrimitiveComponent:SetBoundsScale(NewBoundsScale) end
 
 ---Sets the angular damping of this component.
@@ -469,21 +469,21 @@ function UPrimitiveComponent:SetAllUseCCD(InUseCCD) end
 
 ---Set the linear velocity of all bodies in this component.
 ---@param NewVel FVector
----@param bAddToCurrent boolean @[opt] 
+---@param bAddToCurrent boolean @[opt]
 function UPrimitiveComponent:SetAllPhysicsLinearVelocity(NewVel, bAddToCurrent) end
 
 ---Set the angular velocity of all bodies in this component.
 ---@param NewAngVel FVector
----@param bAddToCurrent boolean @[opt] 
+---@param bAddToCurrent boolean @[opt]
 function UPrimitiveComponent:SetAllPhysicsAngularVelocityInRadians(NewAngVel, bAddToCurrent) end
 
 ---Set the angular velocity of all bodies in this component.
 ---@param NewAngVel FVector
----@param bAddToCurrent boolean @[opt] 
+---@param bAddToCurrent boolean @[opt]
 function UPrimitiveComponent:SetAllPhysicsAngularVelocityInDegrees(NewAngVel, bAddToCurrent) end
 
 ---Change the mass scale used fo all bodies in this component
----@param InMassScale number @[opt] 
+---@param InMassScale number @[opt]
 function UPrimitiveComponent:SetAllMassScale(InMassScale) end
 
 ---Changes the value of bAffectIndirectLightingWhileHidden
@@ -500,12 +500,12 @@ function UPrimitiveComponent:SetAffectDistanceFieldLighting(NewAffectDistanceFie
 
 ---Scales the given vector by the world space moment of inertia. Useful for computing the torque needed to rotate an object.
 ---@param InputVector FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:ScaleByMomentOfInertia(InputVector, BoneName) end
 
 ---Force a single body back to sleep.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:PutRigidBodyToSleep(BoneName) end
 
 ---Perform a sphere trace against a single component
@@ -515,10 +515,10 @@ function UPrimitiveComponent:PutRigidBodyToSleep(BoneName) end
 ---@param bTraceComplex boolean
 ---@param bShowTrace boolean
 ---@param bPersistentShowTrace boolean
----@param HitLocation FVector @[out] 
----@param HitNormal FVector @[out] 
----@param BoneName string @[out] 
----@param OutHit FHitResult @[out] 
+---@param HitLocation FVector @[out]
+---@param HitNormal FVector @[out]
+---@param BoneName string @[out]
+---@param OutHit FHitResult @[out]
 ---@return boolean
 function UPrimitiveComponent:K2_SphereTraceComponent(TraceStart, TraceEnd, SphereRadius, bTraceComplex, bShowTrace, bPersistentShowTrace, HitLocation, HitNormal, BoneName, OutHit) end
 
@@ -528,10 +528,10 @@ function UPrimitiveComponent:K2_SphereTraceComponent(TraceStart, TraceEnd, Spher
 ---@param bTraceComplex boolean
 ---@param bShowTrace boolean
 ---@param bPersistentShowTrace boolean
----@param HitLocation FVector @[out] 
----@param HitNormal FVector @[out] 
----@param BoneName string @[out] 
----@param OutHit FHitResult @[out] 
+---@param HitLocation FVector @[out]
+---@param HitNormal FVector @[out]
+---@param BoneName string @[out]
+---@param OutHit FHitResult @[out]
 ---@return boolean
 function UPrimitiveComponent:K2_SphereOverlapComponent(InSphereCentre, InSphereRadius, bTraceComplex, bShowTrace, bPersistentShowTrace, HitLocation, HitNormal, BoneName, OutHit) end
 
@@ -541,10 +541,10 @@ function UPrimitiveComponent:K2_SphereOverlapComponent(InSphereCentre, InSphereR
 ---@param bTraceComplex boolean
 ---@param bShowTrace boolean
 ---@param bPersistentShowTrace boolean
----@param HitLocation FVector @[out] 
----@param HitNormal FVector @[out] 
----@param BoneName string @[out] 
----@param OutHit FHitResult @[out] 
+---@param HitLocation FVector @[out]
+---@param HitNormal FVector @[out]
+---@param BoneName string @[out]
+---@param OutHit FHitResult @[out]
 ---@return boolean
 function UPrimitiveComponent:K2_LineTraceComponent(TraceStart, TraceEnd, bTraceComplex, bShowTrace, bPersistentShowTrace, HitLocation, HitNormal, BoneName, OutHit) end
 
@@ -566,10 +566,10 @@ function UPrimitiveComponent:K2_IsCollisionEnabled() end
 ---@param bTraceComplex boolean
 ---@param bShowTrace boolean
 ---@param bPersistentShowTrace boolean
----@param HitLocation FVector @[out] 
----@param HitNormal FVector @[out] 
----@param BoneName string @[out] 
----@param OutHit FHitResult @[out] 
+---@param HitLocation FVector @[out]
+---@param HitNormal FVector @[out]
+---@param BoneName string @[out]
+---@param OutHit FHitResult @[out]
 ---@return boolean
 function UPrimitiveComponent:K2_BoxOverlapComponent(InBoxCentre, InBox, bTraceComplex, bShowTrace, bPersistentShowTrace, HitLocation, HitNormal, BoneName, OutHit) end
 
@@ -630,32 +630,32 @@ function UPrimitiveComponent:GetStaticWhenNotMoveable() end
 
 ---Get the linear velocity of a point on a single body.
 ---@param Point FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:GetPhysicsLinearVelocityAtPoint(Point, BoneName) end
 
 ---Get the linear velocity of a single body.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:GetPhysicsLinearVelocity(BoneName) end
 
 ---Get the angular velocity of a single body, in radians per second.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:GetPhysicsAngularVelocityInRadians(BoneName) end
 
 ---Get the angular velocity of a single body, in degrees per second.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:GetPhysicsAngularVelocityInDegrees(BoneName) end
 
 ---Returns unique list of components this component is overlapping.
----@param OutOverlappingComponents TArray_UPrimitiveComponent_ @[out] 
+---@param OutOverlappingComponents TArray_UPrimitiveComponent_ @[out]
 function UPrimitiveComponent:GetOverlappingComponents(OutOverlappingComponents) end
 
 ---Returns a list of actors that this component is overlapping.
----@param OverlappingActors TArray_AActor_ @[out] 
----@param ClassFilter TSubclassOf_AActor_ @[opt] 
+---@param OverlappingActors TArray_AActor_ @[out]
+---@param ClassFilter TSubclassOf_AActor_ @[opt]
 function UPrimitiveComponent:GetOverlappingActors(OverlappingActors, ClassFilter) end
 
 ---Return number of material elements in this primitive
@@ -666,7 +666,7 @@ function UPrimitiveComponent:GetNumMaterials() end
 ---A value of zero will allow objects that are spawned overlapping to go to sleep without moving rather than pop out of each other. E.g., use zero if you spawn dynamic rocks
 ---partially embedded in the ground and want them to be interactive but not pop out of the ground when touched.
 ---A negative value means that the config setting CollisionInitialOverlapDepenetrationVelocity will be used.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return number
 function UPrimitiveComponent:GetMaxDepenetrationVelocity(BoneName) end
 
@@ -682,7 +682,7 @@ function UPrimitiveComponent:GetMaterialIndex(MaterialSlotName) end
 ---     @@param  SectionIndex    Section of the mesh that the face belongs to
 ---     @@return                                 Material applied to section that the hit face belongs to
 ---@param FaceIndex integer
----@param SectionIndex integer @[out] 
+---@param SectionIndex integer @[out]
 ---@return UMaterialInterface
 function UPrimitiveComponent:GetMaterialFromCollisionFaceIndex(FaceIndex, SectionIndex) end
 
@@ -697,7 +697,7 @@ function UPrimitiveComponent:GetMaterialByName(MaterialSlotName) end
 function UPrimitiveComponent:GetMaterial(ElementIndex) end
 
 ---Returns the mass scale used to calculate the mass of a single physics body
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return number
 function UPrimitiveComponent:GetMassScale(BoneName) end
 
@@ -710,7 +710,7 @@ function UPrimitiveComponent:GetMass() end
 function UPrimitiveComponent:GetLinearDamping() end
 
 ---Returns the inertia tensor of this component in kg cm^2. The inertia tensor is in local component space.
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:GetInertiaTensor(BoneName) end
 
@@ -763,21 +763,21 @@ function UPrimitiveComponent:GetCollisionEnabled() end
 ---Component must have simple collision to be queried for closest point.
 ---                              If returns < 0.f, this primitive does not have collsion
 ---@param Point FVector
----@param OutPointOnBody FVector @[out] 
----@param BoneName string @[opt] 
+---@param OutPointOnBody FVector @[out]
+---@param BoneName string @[opt]
 ---@return number
 function UPrimitiveComponent:GetClosestPointOnCollision(Point, OutPointOnBody, BoneName) end
 
 ---Get the center of mass of a single body. In the case of a welded body this will return the center of mass of the entire welded body (including its parent and children)
 ---Objects that are not simulated return (0,0,0) as they do not have COM
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 ---@return FVector
 function UPrimitiveComponent:GetCenterOfMass(BoneName) end
 
 ---Returns BodyInstanceAsyncPhysicsTickHandle of the component. For use in the Async Physics Tick event
----@param BoneName string @[opt] 
----@param bGetWelded boolean @[opt] 
----@param Index integer @[opt] 
+---@param BoneName string @[opt]
+---@param bGetWelded boolean @[opt]
+---@param Index integer @[opt]
 ---@return FBodyInstanceAsyncPhysicsTickHandle
 function UPrimitiveComponent:GetBodyInstanceAsyncPhysicsTickHandle(BoneName, bGetWelded, Index) end
 
@@ -787,8 +787,8 @@ function UPrimitiveComponent:GetAngularDamping() end
 
 ---Creates a Dynamic Material Instance for the specified element index, optionally from the supplied material.
 ---@param ElementIndex integer
----@param SourceMaterial UMaterialInterface @[opt] 
----@param OptionalName string @[opt] 
+---@param SourceMaterial UMaterialInterface @[opt]
+---@param OptionalName string @[opt]
 ---@return UMaterialInstanceDynamic
 function UPrimitiveComponent:CreateDynamicMaterialInstance(ElementIndex, SourceMaterial, OptionalName) end
 
@@ -830,19 +830,19 @@ function UPrimitiveComponent:AllowHLODLevelsExclusion() end
 ---Add an impulse to a single rigid body at a specific location. The Strength is taken as a change in angular velocity instead of an impulse (ie. mass will have no effect).
 ---@param Impulse FVector
 ---@param Location FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:AddVelocityChangeImpulseAtLocation(Impulse, Location, BoneName) end
 
 ---Add a torque to a single rigid body.
 ---@param Torque FVector
----@param BoneName string @[opt] 
----@param bAccelChange boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bAccelChange boolean @[opt]
 function UPrimitiveComponent:AddTorqueInRadians(Torque, BoneName, bAccelChange) end
 
 ---Add a torque to a single rigid body.
 ---@param Torque FVector
----@param BoneName string @[opt] 
----@param bAccelChange boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bAccelChange boolean @[opt]
 function UPrimitiveComponent:AddTorqueInDegrees(Torque, BoneName, bAccelChange) end
 
 ---Add an impulse to all rigid bodies in this component, radiating out from the specified position.
@@ -850,7 +850,7 @@ function UPrimitiveComponent:AddTorqueInDegrees(Torque, BoneName, bAccelChange) 
 ---@param Radius number
 ---@param Strength number
 ---@param Falloff integer
----@param bVelChange boolean @[opt] 
+---@param bVelChange boolean @[opt]
 function UPrimitiveComponent:AddRadialImpulse(Origin, Radius, Strength, Falloff, bVelChange) end
 
 ---Add a force to all bodies in this component, originating from the supplied world-space location.
@@ -858,66 +858,50 @@ function UPrimitiveComponent:AddRadialImpulse(Origin, Radius, Strength, Falloff,
 ---@param Radius number
 ---@param Strength number
 ---@param Falloff integer
----@param bAccelChange boolean @[opt] 
+---@param bAccelChange boolean @[opt]
 function UPrimitiveComponent:AddRadialForce(Origin, Radius, Strength, Falloff, bAccelChange) end
 
 ---Add an impulse to a single rigid body at a specific location.
 ---@param Impulse FVector
 ---@param Location FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:AddImpulseAtLocation(Impulse, Location, BoneName) end
 
 ---Add an impulse to a single rigid body. Good for one time instant burst.
 ---@param Impulse FVector
----@param BoneName string @[opt] 
----@param bVelChange boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bVelChange boolean @[opt]
 function UPrimitiveComponent:AddImpulse(Impulse, BoneName, bVelChange) end
 
 ---Add a force to a single rigid body at a particular location. Both Force and Location should be in body space.
 ---This is like a 'thruster'. Good for adding a burst over some (non zero) time. Should be called every frame for the duration of the force.
 ---@param Force FVector
 ---@param Location FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:AddForceAtLocationLocal(Force, Location, BoneName) end
 
 ---Add a force to a single rigid body at a particular location in world space.
 ---This is like a 'thruster'. Good for adding a burst over some (non zero) time. Should be called every frame for the duration of the force.
 ---@param Force FVector
 ---@param Location FVector
----@param BoneName string @[opt] 
+---@param BoneName string @[opt]
 function UPrimitiveComponent:AddForceAtLocation(Force, Location, BoneName) end
 
 ---Add a force to a single rigid body.
 ---This is like a 'thruster'. Good for adding a burst over some (non zero) time. Should be called every frame for the duration of the force.
 ---@param Force FVector
----@param BoneName string @[opt] 
----@param bAccelChange boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bAccelChange boolean @[opt]
 function UPrimitiveComponent:AddForce(Force, BoneName, bAccelChange) end
 
 ---Add an angular impulse to a single rigid body. Good for one time instant burst.
 ---@param Impulse FVector
----@param BoneName string @[opt] 
----@param bVelChange boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bVelChange boolean @[opt]
 function UPrimitiveComponent:AddAngularImpulseInRadians(Impulse, BoneName, bVelChange) end
 
 ---Add an angular impulse to a single rigid body. Good for one time instant burst.
 ---@param Impulse FVector
----@param BoneName string @[opt] 
----@param bVelChange boolean @[opt] 
+---@param BoneName string @[opt]
+---@param bVelChange boolean @[opt]
 function UPrimitiveComponent:AddAngularImpulseInDegrees(Impulse, BoneName, bVelChange) end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UPrimitiveComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function UPrimitiveComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UPrimitiveComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

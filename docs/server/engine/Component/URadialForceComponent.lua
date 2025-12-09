@@ -9,19 +9,3 @@
 ---@field public DestructibleDamage number @If > 0.f, will cause damage to destructible meshes as well
 ---@field protected ObjectTypesToAffect TArray<integer> @The object types that are affected by this radial force
 local URadialForceComponent = {}
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function URadialForceComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function URadialForceComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function URadialForceComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

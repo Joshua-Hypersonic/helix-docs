@@ -218,18 +218,3 @@ function HVehicle:SetSirenAnimationSpeed(Speed) end
 ---Sets the horn state for the vehicle
 ---@param state boolean Horn state
 function HVehicle:Horn(state) end
-
----Checks if asset has user data of specified class
----@param userDataClass UClass User data class to check
----@return boolean True if asset has user data of class
-function HVehicle:HasAssetUserDataOfClass(userDataClass) end
-
----Gets asset user data of specified class
----@param userDataClass UClass User data class to get
----@return UAssetUserData Asset user data or nil
-function HVehicle:GetAssetUserDataOfClass(userDataClass) end
-
----Adds asset user data of specified class
----@param userDataClass UClass User data class to add
----@return boolean True if successfully added
-function HVehicle:AddAssetUserDataOfClass(userDataClass) end

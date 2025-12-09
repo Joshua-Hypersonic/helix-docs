@@ -250,8 +250,8 @@ function UPhysicsConstraintComponent:GetCurrentSwing2() end
 function UPhysicsConstraintComponent:GetCurrentSwing1() end
 
 ---Retrieve the constraint force most recently applied to maintain this constraint. Returns 0 forces if the constraint is not initialized or broken.
----@param OutLinearForce FVector @[out] 
----@param OutAngularForce FVector @[out] 
+---@param OutLinearForce FVector @[out]
+---@param OutAngularForce FVector @[out]
 function UPhysicsConstraintComponent:GetConstraintForce(OutLinearForce, OutAngularForce) end
 
 ---Gets the constraint object
@@ -259,27 +259,11 @@ function UPhysicsConstraintComponent:GetConstraintForce(OutLinearForce, OutAngul
 function UPhysicsConstraintComponent:GetConstraint() end
 
 ---Get connected components and potential related attachement bones
----@param OutComponent1 UPrimitiveComponent @[out] 
----@param OutBoneName1 string @[out] 
----@param OutComponent2 UPrimitiveComponent @[out] 
----@param OutBoneName2 string @[out] 
+---@param OutComponent1 UPrimitiveComponent @[out]
+---@param OutBoneName1 string @[out]
+---@param OutComponent2 UPrimitiveComponent @[out]
+---@param OutBoneName2 string @[out]
 function UPhysicsConstraintComponent:GetConstrainedComponents(OutComponent1, OutBoneName1, OutComponent2, OutBoneName2) end
 
 ---Break this constraint
 function UPhysicsConstraintComponent:BreakConstraint() end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UPhysicsConstraintComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function UPhysicsConstraintComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UPhysicsConstraintComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

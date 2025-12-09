@@ -94,26 +94,10 @@ function UStaticMeshComponent:SetDistanceFieldSelfShadowBias(NewValue) end
 function UStaticMeshComponent:OnRep_StaticMesh(OldStaticMesh) end
 
 ---Get Local bounds
----@param Min FVector @[out] 
----@param Max FVector @[out] 
+---@param Min FVector @[out]
+---@param Max FVector @[out]
 function UStaticMeshComponent:GetLocalBounds(Min, Max) end
 
 ---Get the initial value of bEvaluateWorldPositionOffset. This is the value when BeginPlay() was last called, or if UpdateInitialEvaluateWorldPositionOffset is called.
 ---@return boolean
 function UStaticMeshComponent:GetInitialEvaluateWorldPositionOffset() end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UStaticMeshComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function UStaticMeshComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UStaticMeshComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

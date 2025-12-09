@@ -32,7 +32,7 @@ function UMeshComponent:SetColorParameterValueOnMaterials(ParameterName, Paramet
 ---Tell the streaming system to start loading all textures with all mip-levels.
 ---@param Seconds number
 ---@param bPrioritizeCharacterTextures boolean
----@param CinematicTextureGroups integer @[opt] 
+---@param CinematicTextureGroups integer @[opt]
 function UMeshComponent:PrestreamTextures(Seconds, bPrioritizeCharacterTextures, CinematicTextureGroups) end
 
 ---Tell the streaming system to start streaming in all LODs for the mesh.
@@ -51,19 +51,3 @@ function UMeshComponent:GetOverlayMaterial() end
 
 ---@return TArray_UMaterialInterface_
 function UMeshComponent:GetMaterials() end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UMeshComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function UMeshComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UMeshComponent:AddAssetUserDataOfClass(InUserDataClass) end
-

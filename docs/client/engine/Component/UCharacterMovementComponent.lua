@@ -179,7 +179,7 @@ function UCharacterMovementComponent:SetWalkableFloorAngle(InWalkableFloorAngle)
 
 ---Change movement mode.
 ---@param NewMovementMode integer
----@param NewCustomMode integer @[opt] 
+---@param NewCustomMode integer @[opt]
 function UCharacterMovementComponent:SetMovementMode(NewMovementMode, NewCustomMode) end
 
 ---@param GroupMask FNavAvoidanceMask
@@ -228,7 +228,7 @@ function UCharacterMovementComponent:K2_GetWalkableFloorAngle() end
 ---Sweeps a vertical trace to find the floor for the capsule at the given location. Will attempt to perch if ShouldComputePerchResult() returns true for the downward sweep result.
 ---No floor will be found if collision is disabled on the capsule!
 ---@param CapsuleLocation FVector
----@param FloorResult FFindFloorResult @[out] 
+---@param FloorResult FFindFloorResult @[out]
 function UCharacterMovementComponent:K2_FindFloor(CapsuleLocation, FloorResult) end
 
 ---Compute distance to the floor from bottom sphere of capsule and store the result in FloorResult.
@@ -238,7 +238,7 @@ function UCharacterMovementComponent:K2_FindFloor(CapsuleLocation, FloorResult) 
 ---@param LineDistance number
 ---@param SweepDistance number
 ---@param SweepRadius number
----@param FloorResult FFindFloorResult @[out] 
+---@param FloorResult FFindFloorResult @[out]
 function UCharacterMovementComponent:K2_ComputeFloorDist(CapsuleLocation, LineDistance, SweepDistance, SweepRadius, FloorResult) end
 
 ---Returns true if the character is in the 'Walking' movement mode.
@@ -359,7 +359,7 @@ function UCharacterMovementComponent:CalcVelocity(DeltaTime, Friction, bFluid, B
 ---forces each frame, use AddForce().
 ---Note that changing the momentum of characters like this can change the movement mode.
 ---@param Impulse FVector
----@param bVelocityChange boolean @[opt] 
+---@param bVelocityChange boolean @[opt]
 function UCharacterMovementComponent:AddImpulse(Impulse, bVelocityChange) end
 
 ---Add force to character. Forces are accumulated each tick and applied together
@@ -413,19 +413,3 @@ function UCharacterMovementComponent:GetVelocityForNavMovement() end
 ---Get maximum movement speed of the agent
 ---@return number
 function UCharacterMovementComponent:GetMaxSpeedForNavMovement() end
-
----Checks whether or not an instance of the provided AssetUserData class is contained.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UCharacterMovementComponent:HasAssetUserDataOfClass(InUserDataClass) end
-
----Returns an instance of the provided AssetUserData class if it's contained in the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return UAssetUserData
-function UCharacterMovementComponent:GetAssetUserDataOfClass(InUserDataClass) end
-
----Creates and adds an instance of the provided AssetUserData class to the target asset.
----@param InUserDataClass TSubclassOf_UAssetUserData_
----@return boolean
-function UCharacterMovementComponent:AddAssetUserDataOfClass(InUserDataClass) end
-
