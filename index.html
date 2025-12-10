@@ -651,6 +651,158 @@
                 background: rgba(245, 217, 10, 0.35);
                 color: #0a0a0a;
             }
+
+            /* ===== MOBILE RESPONSIVE ===== */
+            @media (max-width: 768px) {
+                .header {
+                    flex-direction: column;
+                    padding: 1rem;
+                    gap: 1rem;
+                }
+
+                .brand-logo img {
+                    height: 20px;
+                }
+
+                .search-container {
+                    max-width: none;
+                    width: 100%;
+                }
+
+                .filter-bar {
+                    width: 100%;
+                    flex-direction: column;
+                    gap: 0.75rem;
+                }
+
+                .filter-group {
+                    width: 100%;
+                    justify-content: space-between;
+                }
+
+                .filter-select {
+                    flex: 1;
+                    max-width: 200px;
+                }
+
+                .main-container {
+                    flex-direction: column;
+                }
+
+                .function-list {
+                    width: 100%;
+                    max-height: 40vh;
+                    border-right: none;
+                    border-bottom: 1px solid #161616;
+                }
+
+                .detail-panel {
+                    padding: 1.5rem 1rem;
+                }
+
+                .detail-content h1 {
+                    font-size: 1.75rem;
+                }
+
+                .function-card {
+                    padding: 1rem;
+                }
+
+                .function-card-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .function-badges {
+                    margin-top: 0.5rem;
+                }
+
+                .property-list li {
+                    grid-template-columns: 1fr;
+                    grid-template-areas:
+                        "name"
+                        "type"
+                        "description";
+                    gap: 0.5rem;
+                }
+
+                .property-type {
+                    justify-self: start;
+                }
+
+                .code-block-wrapper code {
+                    font-size: 0.75rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .header {
+                    padding: 0.75rem;
+                }
+
+                .search-bar {
+                    padding: 0.75rem 1rem;
+                    font-size: 0.85rem;
+                }
+
+                .filter-select {
+                    font-size: 0.75rem;
+                    padding: 0.4rem 0.6rem;
+                }
+
+                .function-item {
+                    padding: 0.75rem 0.875rem;
+                }
+
+                .function-name {
+                    font-size: 0.85rem;
+                }
+
+                .function-meta {
+                    font-size: 0.7rem;
+                }
+
+                .detail-panel {
+                    padding: 1rem 0.75rem;
+                }
+
+                .detail-content h1 {
+                    font-size: 1.5rem;
+                }
+
+                .function-card {
+                    padding: 0.875rem;
+                    border-radius: 12px;
+                }
+
+                .function-card-header h2 {
+                    font-size: 0.9rem;
+                }
+
+                .section-title {
+                    font-size: 0.65rem;
+                }
+
+                .param-list li,
+                .return-list li {
+                    padding: 0.75rem 0.875rem;
+                    font-size: 0.85rem;
+                }
+
+                .code-block-wrapper code {
+                    font-size: 0.7rem;
+                }
+
+                .code-label {
+                    font-size: 0.65rem;
+                    padding: 0.4rem 0.75rem;
+                }
+
+                .code-copy-button {
+                    font-size: 0.65rem;
+                    padding: 0.15rem 0.5rem;
+                }
+            }
         </style>
     </head>
     <body>
